@@ -1,0 +1,25 @@
+/* Customizações Gerais */
+body { 
+    background-color: #f4f4f4; 
+}
+
+/* Fundo do Banner Principal - Note que o caminho volta duas pastas (../..) para achar a img */
+.hero-bg {
+    background: linear-gradient(rgba(0, 31, 53, 0.4), rgba(0, 31, 53, 0.7)), url('../img/banner/hero-bg.png') center/cover no-repeat;
+}
+
+/* Transição do Menu Superior quando rolar a página */
+.scrolled-nav { 
+    background-color: #1F2937 !important; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+    padding-top: 10px !important; 
+    padding-bottom: 10px !important; 
+}
+
+/* Ajustes visuais para o Swiper (Corretor de Cores) */
+.swiper-pagination-bullet-active { 
+    background-color: #E5E7EB !important; 
+}
+.swiper-button-next, .swiper-button-prev { 
+    color: #E5E7EB !important; 
+}
