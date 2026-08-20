@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Brisa de São Francisco</title>
+    
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Ícones Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN (Paleta Wireframe Cinza) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            dark: '#1F2937',   /* Cinza médio para textos e fundos escuros */
+                            accent: '#d1d5db', /* Cinza claro para botões e destaques */
+                            tour: '#1F2937',   /* Cinza muito claro para fundos de seção */
+                            light: '#f3f4f6'   /* Quase branco */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Seu CSS Local -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="font-sans text-gray-800 pb-24 md:pb-0">
+
+    <!-- HEADER -->
+    <header id="navbar" class="fixed w-full top-0 z-50 bg-transparent py-6 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center relative z-20">
+            <a href="#banner" id="logo-topo" class="w-32 md:w-40 opacity-0 pointer-events-none transition-all duration-300 transform -translate-y-2">
+                <img src="assets/img/logo/logo-topo.png" alt="Logo">
+            </a>
+
+            <nav class="hidden md:flex space-x-6 text-white text-sm font-medium uppercase">
+                <a href="#banner" class="hover:text-brand-accent transition">Home</a>
+                <a href="#sobre" class="hover:text-brand-accent transition">Sobre</a>
+                <a href="#galeria" class="hover:text-brand-accent transition">Galeria</a>
+                <a href="#plantas" class="hover:text-brand-accent transition">Plantas</a>
+                <a href="#implantacao" class="hover:text-brand-accent transition">Implantação</a>
+                <a href="#localizacao" class="hover:text-brand-accent transition">Localização</a>
+            </nav>
+
+            <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+
+        <!-- Menu Mobile - ABORDAGEM INFALÍVEL -->
+        <!-- top-0 prende no teto absoluto da tela. O bg-brand-dark preenche TUDO por trás do header.
+             O pt-20 (padding-top) empurra os links para começarem SÓ depois que a barra do header terminar -->
+        <div id="mobile-menu" class="hidden absolute top-0 left-0 w-full bg-brand-dark shadow-xl flex-col text-center pt-24 pb-4 z-10 border-t border-gray-700">
+            <a href="#sobre" class="mobile-link block py-4 text-white border-t border-b border-gray-700">Sobre</a>
+            <a href="#galeria" class="mobile-link block py-4 text-white border-b border-gray-700">Galeria</a>
+            <a href="#plantas" class="mobile-link block py-4 text-white border-b border-gray-700">Plantas</a>
+            <a href="#implantacao" class="mobile-link block py-4 text-white border-b border-gray-700">Implantação</a>
+            <a href="#localizacao" class="mobile-link block py-4 text-brand-accent font-bold">Localização</a>
+        </div>
+    </header>
+
+<!-- BANNER HERO -->
+ <!-- ========================================== -->
+    <!-- BANNER HERO (Super Barra Corrigida para Celular) -->
+    <!-- ========================================== -->
+
+<!-- Veja a mágica do min-h-[100dvh] aqui: -->
+<!-- Trocamos para min-h-[100svh] para travar o tamanho e impedir o pulo ao rolar -->
+<section id="banner" class="hero-bg min-h-[100svh] flex flex-col items-center justify-center relative px-2 md:px-4 text-center py-12 md:py-20 bg-cover bg-center">
+    
+    <!-- 1. LOGO -->
+    <!-- mb-8 (celular) e md:mb-12 (PC) criam o espaço exato abaixo da logo -->
+    <!-- Reduzimos de mb-8 para mb-2 (celular) e de mb-12 para mb-6 (PC) -->
+    <div class="z-20 mb-2 md:mb-1">
+        <img class="w-64 md:w-80 drop-shadow-md mx-auto" src="assets/img/logo/logo-centro.png" alt="Logo">
+    </div>
+
+    <!-- 2. CONTEÚDO CENTRAL -->
+    <!-- mb-12 (celular) e md:mb-16 (PC) garantem que a barra nunca vai grudar no botão! -->
+    <!-- Reduzimos de mb-12 para mb-4 (celular) e de mb-16 para mb-8 (PC) -->
+    <div class="relative z-10 flex flex-col items-center w-full max-w-3xl mb-4 md:mb-1">
+        <h1 class="text-white drop-shadow-lg leading-tight mb-3">
+            <span class="text-xl md:text-2xl font-light">Seu novo</span><br>
+            <span class="text-[#b8956b] text-4xl md:text-6xl font-bold uppercase tracking-wider leading-none drop-shadow-md">Condomínio</span><br>
+            <span class="text-lg md:text-xl font-light mt-1 block">no Litoral Norte de São Paulo.</span>
+        </h1>
+        
+        <div class="flex items-center justify-center gap-2 text-white text-base md:text-lg drop-shadow-md mb-6">
+            <i class="ph-bold ph-map-pin"></i>
+            <span>A apenas 350 metros da praia.</span>
+        </div>
+
+        <a href="#sobre" class="bg-[#b8956b] hover:bg-[#a07c50] text-white text-xs md:text-sm font-bold uppercase tracking-wider py-3 px-8 rounded transition duration-300 shadow-lg mb-4">
+            Conheça o Empreendimento
+        </a>
+
+        <i class="ph ph-caret-down text-white text-3xl animate-bounce"></i>
+    </div>
+
+    <!-- 3. SUPER BARRA INFERIOR -->
+    <!-- Sem absolute. Ela apenas obedece a fila indiana do layout. -->
+    <div class="w-full max-w-6xl mx-auto z-20">
+        
+        <div class="bg-[#1F2937]/40 backdrop-blur-md border border-white/10 rounded-xl py-3 px-2 md:py-3 md:px-5 shadow-2xl flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
+            
+            <!-- GRID 3x2 no celular, exatamente como o seu esboço -->
+            <div class="grid grid-cols-3 lg:grid-cols-6 gap-y-4 gap-x-1 w-full lg:w-4/5 lg:pr-4 lg:divide-x lg:divide-white/10">
+                
+                <div class="flex flex-col items-center justify-center text-center px-1">
+                    <i class="ph ph-bed text-[#b8956b] text-xl md:text-2xl mb-0.5"></i>
+                    <span class="text-white font-bold text-[8.5px] md:text-[10px] tracking-widest uppercase leading-tight">3 Dormitórios</span>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center text-center px-1">
+                    <i class="ph ph-bathtub text-[#b8956b] text-xl md:text-2xl mb-0.5"></i>
+                    <span class="text-white font-bold text-[8.5px] md:text-[10px] tracking-widest uppercase leading-tight">1 Suíte</span>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center text-center px-1">
+                    <i class="ph ph-selection-all text-[#b8956b] text-xl md:text-2xl mb-0.5"></i>
+                    <span class="text-white font-bold text-[8.5px] md:text-[10px] tracking-widest uppercase leading-tight">86 a 94 m²</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center text-center px-1">
+                    <i class="ph ph-swimming-pool text-[#b8956b] text-xl md:text-2xl mb-0.5"></i>
+                    <span class="text-white font-bold text-[8.5px] md:text-[10px] tracking-widest uppercase leading-tight">Lazer Completo</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center text-center px-1">
+                    <i class="ph ph-shield-check text-[#b8956b] text-xl md:text-2xl mb-0.5"></i>
+                    <span class="text-white font-bold text-[8.5px] md:text-[10px] tracking-widest uppercase leading-tight">Portaria 24h</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center text-center px-1">
+                    <i class="ph ph-house-line text-[#b8956b] text-xl md:text-2xl mb-0.5"></i>
+                    <span class="text-white font-bold text-[8.5px] md:text-[10px] tracking-widest uppercase leading-tight">Use seu FGTS</span>
+                </div>
+
+            </div>
+            
+            <!-- LADO DIREITO: Preço ocupando tudo embaixo no celular com a linha -->
+            <div class="flex flex-col items-center justify-center w-full lg:w-1/5 pt-3 mt-1 lg:pt-0 lg:mt-0 border-t lg:border-t-0 border-white/20">
+                <span class="text-gray-300 text-[10px] md:text-[10px] uppercase tracking-widest mb-0.5">A partir de</span>
+                <div class="text-[#b8956b] font-bold flex items-baseline gap-1">
+                    <span class="text-lg md:text-xl text-[#b8956b]">R$</span>
+                    <span class="text-3xl md:text-4xl text-white">898</span>
+                    <span class="text-sm md:text-base text-white">mil</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+    <!-- ========================================== -->
+    <!-- SOBRE (Limpo e Focado no Texto) -->
+    <!-- ========================================== -->
+    <section id="sobre" class="relative z-30 -mt-6 md:-mt-10 px-4 sm:px-6 lg:px-8 max-w-[95rem] mx-auto">
+        
+        <div class="relative bg-[url('assets/img/fundo-sobre.jpg')] bg-cover bg-center rounded-3xl shadow-2xl overflow-hidden py-16 md:py-20">
+            
+            <div class="absolute inset-0 bg-white/80 z-0"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Coluna de Texto -->
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-brand-dark mb-6 leading-tight">Bem-vindo ao seu novo refúgio no Litoral Norte de São Paulo.</h1>
+                    <p class="text-gray-600 mb-8 leading-relaxed text-justify">
+                        O Brisa de São Francisco é o mais novo empreendimento na cidade de São Sebastião, projetado para quem busca unir conforto, arquitetura moderna e a paz de um dos litorais mais desejados do Brasil.
+                        <br><br>
+                        Estrategicamente localizado no tradicional e charmoso bairro de São Francisco, o empreendimento fica a menos de 350 metros da Praia.
+                    </p>
+                    
+                    <!-- Botões de Ação Diretos -->
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#galeria" class="border-2 border-brand-dark text-brand-dark hover:bg-brand-dark hover:text-white px-8 py-3 rounded-full font-bold uppercase transition">Galeria</a>
+                        <a href="#plantas" class="border-2 border-brand-dark text-brand-dark hover:bg-brand-dark hover:text-white px-8 py-3 rounded-full font-bold uppercase transition">Plantas</a>
+                    </div>
+                </div>
+
+                <!-- Coluna da Imagem e Preço -->
+                <div class="relative">
+                    <div class="absolute top-4 -left-4 md:-left-8 bg-brand-dark text-white px-6 py-4 rounded-lg shadow-xl z-10">
+                        <p class="text-sm">A partir de</p>
+                        <p class="text-xl font-bold">R$ 898.000 Mil</p>
+                    </div>
+                    <img src="assets/img/projeto/fachada.png" alt="Fachada" class="rounded-xl shadow-lg w-full object-cover h-[400px] md:h-[500px]">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+  <!-- GALERIA (Com sobreposição) -->
+    <!-- 1. -mt-24 md:-mt-40 puxa a imagem da galeria para TRÁS do cartão Sobre -->
+    <!-- 2. pt-32 md:pt-56 empurra o título e o carrossel para baixo, dando respiro -->
+    <!-- 3. z-10 garante que a galeria fique na camada inferior -->
+    <section id="galeria" class="py-20 pt-32 md:pt-56 -mt-24 md:-mt-40 relative z-10 bg-brand-dark bg-[url('assets/img/fundo-galeria.png')] bg-cover bg-center bg-blend-soft-light overflow-hidden">
+    
+<!-- 🌊 ONDA INVERTIDA NO TOPO -->
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-20">
+            <!-- A classe rotate-180 faz a onda ficar "pendurada" do teto -->
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[80px] md:h-[150px] rotate-180">
+                <!-- O fill agora é #ffffff (branco) para emendar com a seção Sobre -->
+                <path d="M0,60 C400,120 800,0 1200,60 V120 H0 Z" fill="#f4f4f4"></path>
+            </svg>
+        </div>
+
+        <!-- 2. Overlay escuro de segurança: garante que mesmo se a imagem for clara, o fundo continue predominantemente #1F2937 (80% de opacidade) -->
+        <div class="absolute inset-0 bg-brand-dark/10 z-0"></div>
+
+
+
+        <!-- 3. Adicionamos relative e z-10 aqui para que o conteúdo fique acima do fundo -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+
+            
+            <!-- 4. Trocamos a cor do título de text-brand-dark para text-white para dar contraste -->
+            <h2 class="text-3xl font-bold text-white mb-10 text-center"><span class="text-brand-accent"></span> A simplicidade de viver bem</h2>
+            
+            <div class="swiper swiper-galeria rounded-xl shadow-2xl">
+                <div class="swiper-wrapper">
+                    <!-- Substitua pelas suas fotos -->
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-01.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-02.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-03.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-04.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-05.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-06.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-07.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-08.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-09.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    <div class="swiper-slide"><img src="assets/img/galeria/foto-10.png" class="w-full h-96 object-cover" alt="Galeria"></div>
+                    
+                
+
+                </div>
+                <div class="swiper-pagination mt-4"></div>
+                <div class="swiper-button-next text-white"></div>
+                <div class="swiper-button-prev text-white"></div>
+            </div>
+        </div>
+        
+    </section>
+
+  <!-- ============================================== -->
+        <!-- TOUR VIRTUAL (COMENTADO E GUARDADO PARA O FUTURO)
+        <div class="bg-gray-200 py-20 px-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-300 transition hover:bg-gray-300 cursor-pointer" onclick="toggleModal('modal-tour')">
+            <i class="ph ph-virtual-reality text-6xl text-brand-dark mb-4"></i>
+            <h3 class="text-3xl font-bold text-brand-dark mb-6 text-center">Confira o <span class="text-gray-500">Tour Virtual</span></h3>
+            <button class="bg-brand-dark text-white px-8 py-3 rounded-full font-bold uppercase hover:bg-gray-800 transition flex items-center shadow-lg">
+                <i class="ph-bold ph-play mr-2"></i> Acessar Tour
+            </button>
+        </div>
+        =================================================== -->
+
+	<!-- TOUR VIRTUAL / VÍDEO (Apenas o botão clicável) -->
+    <!-- Removemos o onclick, cursor-pointer e hover do fundo -->
+    <section id="tour-video" class="border-b border-gray-300 bg-gray-100">
+        
+        <div class="max-w-7xl mx-auto py-4 px-4 flex items-center justify-center gap-6 relative">
+            
+            <!-- Linha decorativa Esquerda -->
+            <div class="hidden md:block flex-grow h-[1px] bg-gray-300"></div>
+
+            <!-- Conteúdo Centralizado -->
+            <div class="flex flex-col items-center justify-center gap-2 flex-shrink-0 px-4">
+                <div class="flex items-center gap-2">
+                    <i class="ph ph-video-camera text-3xl text-brand-dark"></i>
+                    <h3 class="text-lg md:text-xl font-bold text-brand-dark m-0">Confira nosso <span class="text-gray-500">Vídeo</span></h3>
+                </div>
+                
+                <!-- O onclick="toggleModal('modal-video')" agora está APENAS no botão -->
+                <button onclick="toggleModal('modal-video')" class="bg-brand-accent text-brand-dark px-6 py-1.5 text-xs md:text-sm rounded-full font-bold uppercase hover:bg-gray-400 transition flex items-center shadow-md mt-1 cursor-pointer">
+                    <i class="ph-bold ph-play mr-1.5 text-sm"></i> Assistir Vídeo
+                </button>
+            </div>
+
+            <!-- Linha decorativa Direita -->
+            <div class="hidden md:block flex-grow h-[1px] bg-gray-300"></div>
+
+        </div>
+    </section>
+
+
+<!-- ========================================== -->
+    <!-- SEÇÃO DE PLANTAS (Equilíbrio de Tamanhos) -->
+    <!-- ========================================== -->
+    <section id="plantas" class="py-10 md:py-12 relative bg-[url('assets/img/fundo-plantas12.png')] bg-cover bg-center bg-fixed z-30">
+        
+        <div class="absolute inset-0 bg-brand-dark/80 z-0"></div>
+
+        <div class="relative z-10">
+
+            <!-- CARROSSEL CENTRALIZADO -->
+            <!-- max-w-5xl restringe mais a largura, diminuindo a imagem em relação à versão anterior -->
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+                <div class="swiper swiper-plantas bg-white p-1.5 rounded-xl shadow-2xl">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="assets/img/plantas/terreo.jpg" alt="Planta Térreo" class="w-full h-auto rounded-lg"></div>
+                        <div class="swiper-slide"><img src="assets/img/plantas/superior.jpg" alt="Planta Superior" class="w-full h-auto rounded-lg"></div>
+                    </div>
+                </div>
+                <div class="flex justify-center space-x-4 mt-4">
+                    <button class="planta-prev bg-brand-accent p-2.5 rounded-full hover:bg-gray-400 transition shadow-md cursor-pointer"><i class="ph-bold ph-arrow-left text-brand-dark"></i></button>
+                    <button class="planta-next bg-brand-accent p-2.5 rounded-full hover:bg-gray-400 transition shadow-md cursor-pointer"><i class="ph-bold ph-arrow-right text-brand-dark"></i></button>
+                </div>
+            </div>
+
+            <!-- TEXTO ESQUERDA / FORMULÁRIO DIREITA -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+                    
+                    <!-- LADO ESQUERDO: Descrição das Plantas e Selos -->
+                    <!-- Adicionamos 'flex flex-col h-full' para podermos empurrar os selos para baixo -->
+                    <div class="text-white pt-2 flex flex-col h-full">
+                        
+                        <!-- 1. BLOCO DINÂMICO (Alterna entre Térreo e Superior) -->
+                        <div>
+                            <!-- Térreo -->
+                            <div id="text-terreo" class="transition-opacity duration-500">
+                                <h3 class="text-3xl font-bold text-brand-accent mb-4 border-b border-brand-accent/30 pb-3">Pavimento Térreo</h3>
+                                <ul class="space-y-2 text-lg leading-relaxed">
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> Vaga de garagem privativa</li>
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> Lavabo</li>
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> Ambiente de sala integrados com a cozinha</li>
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> Área de serviço</li>
+                                </ul>
+                            </div>
+                            <!-- Superior -->
+                            <div id="text-superior" class="hidden transition-opacity duration-500">
+                                <h3 class="text-3xl font-bold text-brand-accent mb-4 border-b border-brand-accent/30 pb-3">Pavimento Superior</h3>
+                                <ul class="space-y-2 text-lg leading-relaxed">
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> 3 Dormitórios (sendo 1 suíte)</li>
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> Acabamento premium</li>
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> Dormitório com varanda</li>
+                                    <li class="flex items-center"><i class="ph-bold ph-check text-brand-accent mr-3 text-xl"></i> 1 Banheiro reversível</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2. BLOCO FIXO (Selos de Facilidades) -->
+                        <!-- O 'mt-auto' joga este bloco lá para o final, alinhando com a base do formulário -->
+                        <div class="mt-auto pt-8 border-t border-brand-accent/20">
+                            <p class="text-sm text-gray-300 mb-4 font-semibold uppercase tracking-wider">Facilidades de Negociação</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-brand-accent/10 p-2 rounded-md">
+                                        <i class="ph ph-bank text-brand-accent text-2xl"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-white">Aceita Financiamento</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-brand-accent/10 p-2 rounded-md">
+                                        <i class="ph ph-wallet text-brand-accent text-2xl"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-white">Use seu FGTS</span>
+                                </div>
+                                <div class="flex items-center gap-3 sm:col-span-2">
+                                    <div class="bg-brand-accent/10 p-2 rounded-md">
+                                        <i class="ph ph-handshake text-brand-accent text-2xl"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-white">Aprovação Facilitada</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- LADO DIREITO: Formulário (Tamanho Reajustado) -->
+                    <!-- Aumentamos o padding de p-5 para p-6 e repusemos os tamanhos da fonte dos inputs -->
+                    <div class="bg-[#E5E7EB] rounded-xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative z-20 -mb-0 lg:-mb-16 lg:translate-y-8 transition-transform duration-300">
+                        <h3 class="text-2xl font-bold text-[#1F2937] mb-1">Saiba Mais</h3>
+                        <p class="text-[#1F2937]/80 mb-4 text-xs font-semibold leading-tight">Entre em contato para receber a tabela de preços e atendimento prioritário.</p>
+                        
+                        <form class="space-y-3">
+                            <!-- Inputs ganharam py-2.5 e text-sm para facilitar a leitura e clique -->
+                            <div><input type="text" placeholder="Nome*" class="w-full px-3 py-2.5 text-sm rounded-md bg-[#E5E7EB] border border-[#1F2937] text-[#1F2937] font-bold placeholder-[#1F2937] focus:outline-none focus:ring-1 focus:ring-[#1F2937] transition" required></div>
+                            <div><input type="email" placeholder="E-mail*" class="w-full px-3 py-2.5 text-sm rounded-md bg-[#E5E7EB] border border-[#1F2937] text-[#1F2937] font-bold placeholder-[#1F2937] focus:outline-none focus:ring-1 focus:ring-[#1F2937] transition" required></div>
+                            <div><input type="tel" placeholder="Telefone*" class="w-full px-3 py-2.5 text-sm rounded-md bg-[#E5E7EB] border border-[#1F2937] text-[#1F2937] font-bold placeholder-[#1F2937] focus:outline-none focus:ring-1 focus:ring-[#1F2937] transition" required></div>
+                            
+                            <div class="flex flex-col space-y-1">
+                                <label class="text-[#1F2937] font-bold text-xs leading-none">Em caso de financiamento, qual sua renda média mensal?</label>
+                                <div class="relative">
+                                    <select class="w-full px-3 py-2.5 text-sm rounded-md bg-[#E5E7EB] border border-[#1F2937] text-[#1F2937] font-bold focus:outline-none focus:ring-1 focus:ring-[#1F2937] transition appearance-none cursor-pointer" required>
+                                        <option value="" disabled selected>Selecione</option>
+                                        <option value="20-30k">De R$ 20.000 a R$ 30.000</option>
+                                        <option value="30-40k">De R$ 30.000 a R$ 40.000</option>
+                                        <option value="acima-40k">Acima de R$ 40.000</option>
+                                        <option value="sem-financiamento">Não pretendo financiar</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#1F2937]"><svg class="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
+                                </div>
+                            </div>
+
+                            <!-- Textarea voltou para rows="2" -->
+                            <div><textarea placeholder="Sua Mensagem" rows="2" class="w-full px-3 py-2.5 text-sm rounded-md bg-[#E5E7EB] border border-[#1F2937] text-[#1F2937] font-bold placeholder-[#1F2937] focus:outline-none focus:ring-1 focus:ring-[#1F2937] transition resize-none"></textarea></div>
+                            
+                            <div class="flex items-start space-x-2 pt-1">
+                                <input type="checkbox" id="autorizacao-plantas" class="mt-0.5 w-3.5 h-3.5 text-[#1F2937] bg-[#E5E7EB] border-[#1F2937] rounded focus:ring-1 focus:ring-[#1F2937] cursor-pointer">
+                                <label for="autorizacao-plantas" class="text-[11px] text-[#1F2937] font-bold leading-tight cursor-pointer">Autorizo o envio de novidades e informações.</label>
+                            </div>
+
+                            <!-- Botão mais robusto para clique fácil -->
+                            <button type="submit" class="w-full bg-[#1F2937] text-white font-bold text-sm md:text-base py-3 rounded-md hover:bg-gray-800 transition shadow-md mt-2">Enviar</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+	
+
+    <!-- IMPLANTAÇÃO / LAZER -->
+    <section id="implantacao" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-brand-dark mb-4"><span class="text-brand-accent"></span> Venha viver o extraodinário</h2>
+            </div>
+
+            <div class="flex justify-center space-x-4 mb-10">
+                <button onclick="openTab('implantacao')" id="btn-implantacao" class="bg-brand-dark text-white px-8 py-3 rounded font-bold uppercase transition">Implantação</button>
+                <button onclick="openTab('lazer')" id="btn-lazer" class="bg-gray-200 text-gray-600 hover:bg-gray-300 px-8 py-3 rounded font-bold uppercase transition">Lazer</button>
+            </div>
+
+            <!-- ABA: IMPLANTAÇÃO -->
+            <div id="tab-implantacao">
+                
+               <!-- Imagem ampliada, sem sombras e sem bordas arredondadas -->
+                <div class="w-full mx-auto mb-10">
+                    <img src="assets/img/projeto/implantacao3.jpg" alt="Implantação" class="w-full h-auto">
+                </div>
+
+                <!-- Texto centralizado logo abaixo -->
+                <div class="max-w-4xl mx-auto text-center px-4 text-justify">
+                    <h4 class="font-bold text-2xl mb-4 text-brand-dark text-center">Exclusividade</h4>
+                    <p class="text-base text-gray-600 leading-relaxed">
+                        Com apenas 42 unidades e plantas de 86,96 m² a 94,69 m², cada apartamento foi cuidadosamente planejado para proporcionar conforto, funcionalidade e bem-estar. A suíte garante mais privacidade, enquanto os ambientes integrados valorizam a convivência e aproveitam ao máximo a iluminação e a ventilação naturais.
+                        
+                        Um projeto que combina elegância, praticidade e exclusividade, em um cenário privilegiado para quem deseja viver com qualidade e transformar cada momento em uma experiência especial.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ABA: LAZER -->
+            <div id="tab-lazer" class="hidden">
+                
+                <!-- Imagem ampliada, sem sombras e sem bordas arredondadas (Igual Implantação) -->
+                <!-- Carrossel de Lazer (Tamanho reduzido e com 5 slides) -->
+                <div class="swiper swiper-lazer w-full max-w-5xl mx-auto mb-10 relative">
+                    <div class="swiper-wrapper">
+                        <!-- Slide 1 -->
+                        <div class="swiper-slide">
+                            <img src="assets/img/projeto/lazer1.png" alt="Lazer 1" class="w-full h-[300px] md:h-[500px] object-cover">
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="swiper-slide">
+                            <img src="assets/img/projeto/lazer2.png" alt="Lazer 2" class="w-full h-[300px] md:h-[500px] object-cover">
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="swiper-slide">
+                            <img src="assets/img/projeto/lazer3.png" alt="Lazer 3" class="w-full h-[300px] md:h-[500px] object-cover">
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="swiper-slide">
+                            <img src="assets/img/projeto/lazer4.png" alt="Lazer 4" class="w-full h-[300px] md:h-[500px] object-cover">
+                        </div>
+                        <!-- Slide 5 -->
+                        <div class="swiper-slide">
+                            <img src="assets/img/projeto/lazer5.png" alt="Lazer 5" class="w-full h-[300px] md:h-[500px] object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Setas de Navegação -->
+                    <div class="swiper-button-next !text-brand-dark"></div>
+                    <div class="swiper-button-prev !text-brand-dark"></div>
+                    <!-- Paginação (Bolinhas) -->
+                    <div class="swiper-pagination"></div>
+                </div>
+
+                <!-- Script de Inicialização (Obrigatório para a aba que inicia oculta) -->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        new Swiper(".swiper-lazer", {
+                            loop: true,
+                            observer: true, /* Muito importante pois a aba inicia escondida */
+                            observeParents: true,
+                            navigation: {
+                                nextEl: ".swiper-lazer .swiper-button-next",
+                                prevEl: ".swiper-lazer .swiper-button-prev",
+                            },
+                            pagination: {
+                                el: ".swiper-lazer .swiper-pagination",
+                                clickable: true,
+                            }
+                        });
+                    });
+                </script>
+
+                <!-- Texto centralizado logo abaixo -->
+                <div class="max-w-4xl mx-auto text-center px-4 text-justify">
+                    <h4 class="font-bold text-2xl mb-4 text-brand-dark text-center">Área de Lazer</h4>
+                    <p class="text-base text-gray-600 leading-relaxed">
+                        O condomínio foi pensado para proporcionar momentos de lazer, convivência e bem-estar em um ambiente completo e acolhedor. Cada espaço foi planejado para atender diferentes estilos de vida — seja para relaxar na piscina e na sauna, reunir a família e os amigos na área gourmet e no salão de festas, cuidar da saúde na academia ou proporcionar diversão para as crianças no playground.
+                        <br><br>
+                        - Piscina<br>
+                        - Sauna<br>
+                        - Área Gourmet<br>
+                        - Salão de festa<br>
+                        - São de Jogos<br>
+                        - Academia<br>
+                        - Playground<br>
+                        - Portaria 24 horas
+                    </p>
+                </div>
+
+            </div>
+			
+			<!-- EVOLUÇÃO DAS OBRAS -->
+    <!-- EVOLUÇÃO DAS OBRAS (Versão Compactada) -->
+    <!-- 1. Reduzimos o padding inferior (pb-20 virou pb-8) e o superior (pt-10 virou pt-8) -->
+    <div id="obras" class="mt-8 border-t border-gray-300 pt-8 pb-8">
+        
+        <!-- 2. Reduzimos a margem abaixo do título (mb-10 virou mb-6) -->
+        <div class="text-center mb-6">
+            <!-- Diminuí também a margem entre o H3 e o Parágrafo (mb-2 virou mb-1) -->
+            <h3 class="text-2xl font-bold text-brand-dark mb-1"><span class="text-brand-accent"></span> Acompanhe a evolução das obras</h3>
+            <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Agosto/2026</p>
+        </div>
+        
+        <!-- 3. Reduzimos o espaço entre os itens da grade (gap-8 virou gap-6) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Item: Fundações -->
+            <div>
+                <div class="flex justify-between text-sm font-bold text-brand-dark mb-2">
+                    <p>Fundações</p>
+                    <p>100%</p>
+                </div>
+                <!-- Fundo da barra (Cinza claro) -->
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <!-- Preenchimento da barra (Cinza escuro) -->
+                    <div class="bg-brand-dark h-3 rounded-full transition-all duration-1000" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Item: Paredes e Alvenaria -->
+            <div>
+                <div class="flex justify-between text-sm font-bold text-brand-dark mb-2">
+                    <p>Paredes e Alvenaria</p>
+                    <p>100%</p>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div class="bg-brand-dark h-3 rounded-full transition-all duration-1000" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Item: Instalações Elétricas -->
+            <div>
+                <div class="flex justify-between text-sm font-bold text-brand-dark mb-2">
+                    <p>Instalações Elétricas</p>
+                    <p>50%</p>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div class="bg-brand-dark h-3 rounded-full transition-all duration-1000" style="width: 50%;"></div>
+                </div>
+            </div>
+
+            <!-- Item: Acabamentos -->
+            <div>
+                <div class="flex justify-between text-sm font-bold text-brand-dark mb-2">
+                    <p>Acabamentos</p>
+                    <p>85%</p>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div class="bg-brand-dark h-3 rounded-full transition-all duration-1000" style="width: 85%;"></div>
+                </div>
+            </div>
+            
+            <!-- Você pode copiar e colar os blocos acima para adicionar mais etapas (Pintura, Esquadrias, etc.) -->
+        </div>
+    </div>
+			
+        </div>
+    </section>
+	
+	<!-- LOCALIZAÇÃO / WAZE -->
+    <section id="localizacao" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-brand-dark mb-4"><span class="text-brand-accent"></span> Rua Domingos Luciano, Nº 89 - São Francisco, São Sebastião - SP</h2>
+                <p class="text-gray-600 text-sm text-justify">Em uma das regiões mais charmosas de São Sebastião, o Brisa de São Francisco combina localização privilegiada, conforto e qualidade de vida. A poucos metros do mar e cercado pela tranquilidade e beleza natural do bairro de São Francisco, o empreendimento foi pensado para quem valoriza momentos especiais, praticidade e bem-estar.
+
+             Um projeto que une arquitetura contemporânea, ambientes cuidadosamente planejados e a proximidade com tudo o que torna São Sebastião um destino tão desejado.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Mapa e Botões -->
+    <div class="bg-white p-4 rounded-xl shadow-md">
+         <!-- IFRAME DO GOOGLE MAPS --> 
+          <iframe src="https://www.google.com/maps?q=Rua+Domingos+Luciano,+89,+São+Francisco,+São+Sebastião+-+SP&output=embed" width="100%" height="350" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> 
+          <div class="grid grid-cols-2 gap-4 mt-4"> 
+            <a href="https://www.waze.com/ul?q=Rua%20Domingos%20Luciano%2C%2089%20-%20S%C3%A3o%20Francisco%2C%20S%C3%A3o%20Sebasti%C3%A3o%20-%20SP" target="_blank" class="bg-brand-accent text-brand-dark text-center py-3 rounded font-bold uppercase text-sm hover:bg-gray-400 transition flex items-center justify-center">
+            <i class="ph ph-navigation-arrow mr-2 text-xl"></i> Waze</a> 
+            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Domingos+Luciano,+89,+S%C3%A3o+Francisco,+S%C3%A3o+Sebasti%C3%A3o,+SP" target="_blank" class="bg-brand-dark text-white text-center py-3 rounded font-bold uppercase text-sm hover:bg-gray-600 transition flex items-center justify-center">
+                <i class="ph ph-map-pin mr-2 text-xl"></i> Mapa</a> </div> </div>
+
+                <!-- Distâncias -->
+                <div class="bg-white p-8 rounded-xl shadow-md flex flex-col justify-center">
+                    <h3 class="text-xl font-bold text-brand-dark mb-6 border-b pb-4">Pontos de Referência</h3>
+                    <ul class="space-y-6">
+                        <li class="flex items-center"><i class="ph-fill ph-map-pin text-2xl text-brand-accent mr-4"></i><div><p class="font-bold text-brand-dark">Praia de São Francisco</p><p class="text-sm text-gray-500">350 metros</p></div></li>
+                        <li class="flex items-center"><i class="ph-fill ph-map-pin text-2xl text-brand-accent mr-4"></i><div><p class="font-bold text-brand-dark">Iate Clube Ilhabela</p><p class="text-sm text-gray-500">340 metros</p></div></li>
+                        <li class="flex items-center"><i class="ph-fill ph-map-pin text-2xl text-brand-accent mr-4"></i><div><p class="font-bold text-brand-dark">Colégio Mestre</p><p class="text-sm text-gray-500">50 metros</p></div></li>
+                        <li class="flex items-center"><i class="ph-fill ph-map-pin text-2xl text-brand-accent mr-4"></i><div><p class="font-bold text-brand-dark">Centro Histórico de São Sebastião</p><p class="text-sm text-gray-500">400 metros</p></div></li>
+                    <li class="flex items-center"><i class="ph-fill ph-map-pin text-2xl text-brand-accent mr-4"></i><div><p class="font-bold text-brand-dark">Mercado Gima</p><p class="text-sm text-gray-500">400 metros</p></div></li>
+                    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REALIZAÇÃO (Logos e Políticas) -->
+    <section id="realizacao" class="py-16 bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
+                
+                <img src="assets/img/realizacao/logo-realizacao2.png" alt="Logo Incorporadora" class="w-48 object-contain">
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-gray-500 text-justify">
+                <div>
+                    <p class="font-bold text-brand-dark mb-2 uppercase">Política de Privacidade</p>
+                    <p>Nos comprometemos a nunca compartilhar seus dados com terceiros. Os dados aqui captados serão utilizados única e exclusivamente para comunicações referentes a este empreendimento imobiliário.</p>
+                </div>
+                <div>
+                    <p class="font-bold text-brand-dark mb-2 uppercase">Política de Dados LGPD</p>
+                    <p>O uso continuado de nosso site será considerado como aceitação de nossas práticas em torno de privacidade e informações pessoais. Os dados captados serão utilizados para contato comercial pelas partes autorizadas.</p>
+                </div>
+                <div>
+                    <p class="font-bold text-brand-dark mb-2 uppercase">Mais Informações</p>
+                    <p>Você é livre para recusar a nossa solicitação de informações pessoais, entendendo que talvez não possamos fornecer alguns dos serviços desejados. Dúvidas, entre em contato via canais oficiais.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<br><br>
+
+    <!-- FOOTER E RODAPÉ FIXO -->
+    <div class="fixed bottom-0 left-0 w-full bg-brand-dark border-t-4 border-brand-accent z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-center space-x-12 py-3 px-2">
+            <a href="tel:+551238825888" class="flex flex-col md:flex-row items-center text-white hover:text-brand-accent">
+                 <i class="ph-fill ph-phone text-2xl md:mr-2"> </i>
+                <div class="text-center md:text-left"><p class="text-[10px] md:text-xs font-bold uppercase">Contato</p><p class="text-[10px] md:text-xs text-gray-300">12 3882-5888</p></div>
+            </a>
+            <a href="https://wa.me/551238825888" class="flex flex-col md:flex-row items-center text-green-400 hover:text-green-300">
+                <i class="ph-fill ph-whatsapp-logo text-2xl md:mr-2"></i>
+                <div class="text-center md:text-left"><p class="text-[10px] md:text-xs font-bold uppercase">Atendimento</p><p class="text-[10px] md:text-xs text-green-100">WhatsApp</p></div>
+            </a>
+        </div>
+    </div>
+
+<!-- MODAL TOUR VIRTUAL -->
+    <div id="modal-tour" class="hidden fixed inset-0 z-[100] bg-gray-900 bg-opacity-90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-5xl h-[80vh] relative overflow-hidden shadow-2xl">
+            <button onclick="toggleModal('modal-tour')" class="absolute top-4 right-4 bg-brand-dark text-white w-10 h-10 rounded-full flex items-center justify-center font-bold z-10 hover:bg-gray-500 transition"><i class="ph-bold ph-x text-xl"></i></button>
+            
+            <!-- Link do Tour Virtual (Substitua o src abaixo pelo link do seu Tour) -->
+            <iframe width="100%" height="100%" src="####" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+
+    <!-- MODAL video -->
+    <div id="modal-video" class="hidden fixed inset-0 z-[100] bg-gray-900 bg-opacity-90 backdrop-blur-sm flex items-center justify-center p-4">
+    <!-- Container principal com tamanho travado e centralizado -->
+    <div class="bg-black rounded-lg w-full max-w-4xl aspect-video relative overflow-hidden shadow-2xl flex items-center justify-center">
+        
+        <!-- Botão de Fechar -->
+<button onclick="toggleModal('modal-video')"
+    class="absolute top-4 right-4 bg-white text-black w-10 h-10 rounded-full flex items-center justify-center font-bold z-10 hover:bg-gray-300 transition cursor-pointer">
+    <i class="ph-bold ph-x text-xl"></i>
+</button>
+
+<!-- Vídeo do YouTube -->
+<iframe
+    class="w-full h-full block bg-black"
+    src="https://www.youtube.com/embed/rNp4xeQKXYM?feature=share"
+    title="Vídeo do YouTube"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+</iframe>
+        
+    </div>
+</div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
