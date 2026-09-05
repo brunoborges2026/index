@@ -29,6 +29,7 @@ function doPost(e) {
     if (action === 'createForm') return createForm(data);
     if (action === 'getFormByToken') return getFormByToken(data);
     if (action === 'signForm') return signForm(data);
+    if (action === 'deleteForm') return deleteForm(data);
 
     return jsonResponse({ error: 'Ação desconhecida' }, 400);
   } catch (error) {
@@ -188,10 +189,12 @@ function getDashboardData(data) {
     if (formToken !== '' && (isAdmin || formEmail === data.brokerEmail.toLowerCase())) {
       forms.push({
         token: formToken,
+        brokerEmail: (rows[i][1] || '').toString(),
         status: (rows[i][2] || '').toString(),
         ownerName: (rows[i][3] || '').toString(),
         phone: (rows[i][4] || '').toString(),
-        createdAt: (rows[i][6] || '').toString()
+        createdAt: (rows[i][6] || '').toString(),
+        signedAt: (rows[i][7] || '').toString()
       });
     }
   }
@@ -302,4 +305,18 @@ function convertBase64ToBlob(b64, filename) {
   const contentType = parts[0].split(':')[1];
   const decoded = Utilities.base64Decode(parts[1]);
   return Utilities.newBlob(decoded, contentType, filename);
+}
+
+function deleteForm(data) {
+  if (!verifyAdmin(data.adminUser, data.adminPass)) return jsonResponse({success: false, error: 'Acesso Negado'});
+  const sheet = getSheet('Forms');
+  const rows = sheet.getDataRange().getValues();
+  for(let i=1; i<rows.length; i++) {
+    const formToken = (rows[i][0] || '').toString();
+    if(formToken === data.token) {
+      sheet.deleteRow(i+1);
+      return jsonResponse({success:true});
+    }
+  }
+  return jsonResponse({success:false, error: 'Ficha não encontrada'});
 }
