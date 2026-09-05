@@ -1,0 +1,3 @@
+## 2023-10-27 - Visual Indicator for Required Form Fields
+**Learning:** Forms with many inputs often lack clear visual distinction between optional and required fields until submission is attempted. While HTML5 validation catches errors on submit, users appreciate upfront visual cues. Relying solely on `[required]` is great for screen readers but invisible to sighted users by default.
+**Action:** When working with forms, always consider adding a small script or CSS rule (e.g., `label:has(+ :required)::after { content: '*'; }` or a JS fallback) to explicitly mark required fields with a visual indicator (like a red asterisk). Ensure the visual indicator is hidden from screen readers (`aria-hidden="true"`) to prevent redundant announcements (e.g., "star").
