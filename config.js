@@ -1,6 +1,6 @@
 // Cole a URL do seu Google Apps Script aqui.
 // Deve terminar com /exec
-const CONFIG_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE_6f-3vwVS4pKZ48pDrLFM4V65xkRIen0dhb_o-7N7gyQCP0cRcwpn9DzI612ciTKig/exec";
+const CONFIG_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfWmNVhNFY1Lr4jM-NhIh276DR3wXKUlKumVvoBwH_sMHJVvcJg4MF3OdV60qqM3SItA/exec";
 
 // Helper universal para evitar bloqueios CORS de Preflight no Google Apps Script
 async function apiCall(payload) {
