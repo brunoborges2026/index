@@ -389,7 +389,17 @@
         const brokerEmail = localStorage.getItem('broker_email');
         if (!brokerEmail) window.location.href = 'index.html';
 
-                function nextStep(step) {
+                        // UX Enhancement: Add visual indicator for required fields
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('[required]').forEach(el => {
+                const label = el.previousElementSibling;
+                if (label && label.tagName === 'LABEL' && !label.innerHTML.includes('text-red-500')) {
+                    label.innerHTML += ' <span class="text-red-500" aria-hidden="true">*</span>';
+                }
+            });
+        });
+
+        function nextStep(step) {
             // Simple validation before moving
             if (step === 2) {
                 // Validate only fields in step-1
