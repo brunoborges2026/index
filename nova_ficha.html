@@ -100,7 +100,16 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">Estado (UF)</label>
-                    <input type="text" name="proprietario_estado" class="w-full border rounded p-2" required maxlength="2">
+                    <select name="proprietario_estado" class="w-full border rounded p-2" required>
+                        <option value="" disabled selected>UF</option>
+                        <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option>
+                        <option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option>
+                        <option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                        <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option>
+                        <option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option>
+                        <option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                        <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">CEP</label>
@@ -150,7 +159,16 @@
                     </div>
                     <div>
                         <label class="block font-medium mb-1">Estado (UF)</label>
-                        <input type="text" name="imo_estado_uf" class="w-full border rounded p-2" required maxlength="2">
+                        <select name="imo_estado_uf" class="w-full border rounded p-2" required>
+                        <option value="" disabled selected>UF</option>
+                        <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option>
+                        <option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option>
+                        <option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                        <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option>
+                        <option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option>
+                        <option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                        <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                    </select>
                     </div>
                     <div>
                         <label class="block font-medium mb-1">CEP</label>
@@ -371,9 +389,32 @@
         const brokerEmail = localStorage.getItem('broker_email');
         if (!brokerEmail) window.location.href = 'index.html';
 
-        function nextStep(step) {
+                function nextStep(step) {
             // Simple validation before moving
-            if (step === 2 && !document.getElementById('novaFichaForm').reportValidity()) return;
+            if (step === 2) {
+                // Validate only fields in step-1
+                let step1Fields = document.querySelectorAll('#step-1 [required]');
+                let valid = true;
+                for (let field of step1Fields) {
+                    if (!field.reportValidity()) {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (!valid) return;
+            }
+            if (step === 3) {
+                // Validate only fields in step-2
+                let step2Fields = document.querySelectorAll('#step-2 [required]');
+                let valid = true;
+                for (let field of step2Fields) {
+                    if (!field.reportValidity()) {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (!valid) return;
+            }
 
             document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.step-item').forEach(el => el.classList.remove('active'));
