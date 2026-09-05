@@ -1,6 +1,6 @@
 // --- VETORIAL IMÓVEIS: GOOGLE APPS SCRIPT BACKEND ---
-const SPREADSHEET_ID = 'COLE_O_ID_DA_SUA_PLANILHA_AQUI'; // EX: 1BxiMVs0XRYFgPnUKz...
-const FOLDER_ID = 'COLE_O_ID_DA_SUA_PASTA_NO_DRIVE_AQUI'; // EX: 1t2r3...
+const SPREADSHEET_ID = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+const FOLDER_ID = PropertiesService.getScriptProperties().getProperty('FOLDER_ID');
 
 // --- CORS PREFLIGHT HANDLER ---
 function doOptions(e) {
@@ -25,7 +25,7 @@ function doPost(e) {
     if (action === 'adminDeleteUser') return adminDeleteUser(data);
 
     // Form/Dashboard Actions
-    if (action === 'getDashboardData') return getDashboardData(data);
+    if (action === 'getForms') return getDashboardData(data);
     if (action === 'createForm') return createForm(data);
     if (action === 'getFormByToken') return getFormByToken(data);
     if (action === 'signForm') return signForm(data);
@@ -87,10 +87,11 @@ function handleSetPassword(data) {
 // ==========================================
 // ADMIN FUNCTIONS
 // ==========================================
-const ADMIN_USER = 'vetorial';
-const ADMIN_PASS = 'vetorial2026';
+const ADMIN_USER = PropertiesService.getScriptProperties().getProperty('ADMIN_USER');
+const ADMIN_PASS = PropertiesService.getScriptProperties().getProperty('ADMIN_PASS');
 
 function verifyAdmin(user, pass) {
+  if (!ADMIN_USER || !ADMIN_PASS) return false;
   return user === ADMIN_USER && pass === ADMIN_PASS;
 }
 
@@ -234,6 +235,9 @@ function signForm(data) {
       }
 
       // Save images to drive
+      if (!FOLDER_ID) {
+        return jsonResponse({ success: false, error: 'A variável de ambiente FOLDER_ID não está configurada no Apps Script.' });
+      }
       const folder = DriveApp.getFolderById(FOLDER_ID);
 
       let signatureUrl = '';
@@ -276,6 +280,9 @@ function signForm(data) {
 // ==========================================
 
 function getSheet(name) {
+  if (!SPREADSHEET_ID) {
+    throw new Error("A variável de ambiente 'SPREADSHEET_ID' não está configurada no Apps Script.");
+  }
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   let sheet = ss.getSheetByName(name);
   if (!sheet) {
