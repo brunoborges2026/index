@@ -1,6 +1,6 @@
 // --- VETORIAL IMÓVEIS: GOOGLE APPS SCRIPT BACKEND ---
-const SPREADSHEET_ID = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
-const FOLDER_ID = PropertiesService.getScriptProperties().getProperty('FOLDER_ID');
+const SPREADSHEET_ID = '1pWwlZdhMJfz5cxPHgCc4SUqwlfOHVV5gt4wX_8ZtaMg';
+const FOLDER_ID = '1MVFxR2sKFjPTuuP4mm4n-h2X0kfMl9W0';
 
 // --- CORS PREFLIGHT HANDLER ---
 function doOptions(e) {
@@ -87,11 +87,10 @@ function handleSetPassword(data) {
 // ==========================================
 // ADMIN FUNCTIONS
 // ==========================================
-const ADMIN_USER = PropertiesService.getScriptProperties().getProperty('ADMIN_USER');
-const ADMIN_PASS = PropertiesService.getScriptProperties().getProperty('ADMIN_PASS');
+const ADMIN_USER = 'vetorial';
+const ADMIN_PASS = 'vetorial2026';
 
 function verifyAdmin(user, pass) {
-  if (!ADMIN_USER || !ADMIN_PASS) return false;
   return user === ADMIN_USER && pass === ADMIN_PASS;
 }
 
@@ -235,9 +234,6 @@ function signForm(data) {
       }
 
       // Save images to drive
-      if (!FOLDER_ID) {
-        return jsonResponse({ success: false, error: 'A variável de ambiente FOLDER_ID não está configurada no Apps Script.' });
-      }
       const folder = DriveApp.getFolderById(FOLDER_ID);
 
       let signatureUrl = '';
@@ -280,9 +276,6 @@ function signForm(data) {
 // ==========================================
 
 function getSheet(name) {
-  if (!SPREADSHEET_ID) {
-    throw new Error("A variável de ambiente 'SPREADSHEET_ID' não está configurada no Apps Script.");
-  }
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   let sheet = ss.getSheetByName(name);
   if (!sheet) {
