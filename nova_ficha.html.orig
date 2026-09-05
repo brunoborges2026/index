@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Ficha - Vetorial Imóveis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9); display: flex; justify-content: center; align-items: center;
+            z-index: 1000; font-size: 1.5rem; font-weight: bold; color: #ff7a00; display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-6">
+    <div id="loadingOverlay" class="loading-overlay">Salvando Ficha...</div>
+
+    <div class="max-w-4xl mx-auto bg-white p-6 md:p-8 rounded shadow">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Criar Nova Ficha de Imóvel</h1>
+
+        <div id="successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" style="display: none;">
+            <strong class="font-bold">Sucesso!</strong>
+            <span class="block sm:inline">Ficha gerada com sucesso.</span>
+            <div class="mt-4 flex flex-col md:flex-row gap-4">
+                <a id="waLinkBtn" href="#" target="_blank" class="bg-green-600 text-white px-4 py-2 rounded text-center hover:bg-green-700">Enviar link via WhatsApp</a>
+                <a href="dashboard.html" class="bg-gray-600 text-white px-4 py-2 rounded text-center hover:bg-gray-700">Voltar ao Painel</a>
+            </div>
+        </div>
+
+        <form id="novaFichaForm">
+            <!-- 1. Proprietário -->
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 text-orange-600">1. Caracterização do Proprietário</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium mb-1">Nome Completo</label>
+                    <input type="text" name="proprietario_nome" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">RG</label>
+                    <input type="text" name="proprietario_rg" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">CPF</label>
+                    <input type="text" name="proprietario_cpf" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Data de Nascimento</label>
+                    <input type="date" name="proprietario_nasc" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Estado Civil</label>
+                    <select name="proprietario_estado_civil" class="w-full border rounded p-2" required>
+                        <option value="Solteiro(a)">Solteiro(a)</option>
+                        <option value="Casado(a)">Casado(a)</option>
+                        <option value="Divorciado(a)">Divorciado(a)</option>
+                        <option value="Viúvo(a)">Viúvo(a)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nacionalidade</label>
+                    <input type="text" name="proprietario_nacionalidade" value="Brasileiro(a)" class="w-full border rounded p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Profissão</label>
+                    <input type="text" name="proprietario_profissao" class="w-full border rounded p-2">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium mb-1">Logradouro (Rua/Av)</label>
+                    <input type="text" name="proprietario_rua" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Número</label>
+                    <input type="text" name="proprietario_num" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Complemento</label>
+                    <input type="text" name="proprietario_comp" class="w-full border rounded p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Bairro</label>
+                    <input type="text" name="proprietario_bairro" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Cidade</label>
+                    <input type="text" name="proprietario_cidade" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Estado (UF)</label>
+                    <input type="text" name="proprietario_estado" class="w-full border rounded p-2" required maxlength="2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">CEP</label>
+                    <input type="text" name="proprietario_cep" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">E-mail</label>
+                    <input type="email" name="proprietario_email" class="w-full border rounded p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Telefone (WhatsApp c/ DDD)</label>
+                    <input type="text" name="proprietario_telefone" id="proprietario_telefone" placeholder="Ex: 12999999999" class="w-full border rounded p-2" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+            </div>
+
+            <!-- 2. Descrição do Imóvel -->
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 text-orange-600">2. Descrição do Imóvel</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-sm">
+
+                <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 border-b pb-4">
+                    <div class="col-span-2">
+                        <label class="block font-medium mb-1">Logradouro do Imóvel (Rua/Av)</label>
+                        <input type="text" name="imo_rua" class="w-full border rounded p-2" required>
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">Número</label>
+                        <input type="text" name="imo_num" class="w-full border rounded p-2" required>
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">Complemento</label>
+                        <input type="text" name="imo_comp" class="w-full border rounded p-2">
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">Bairro</label>
+                        <input type="text" name="imo_bairro" class="w-full border rounded p-2" required>
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">Cidade</label>
+                        <input type="text" name="imo_cidade" class="w-full border rounded p-2" required>
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">Estado (UF)</label>
+                        <input type="text" name="imo_estado_uf" class="w-full border rounded p-2" required maxlength="2">
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">CEP</label>
+                        <input type="text" name="imo_cep" class="w-full border rounded p-2" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-1">Estado do imóvel</label>
+                    <select name="imo_estado" class="w-full border rounded p-2">
+                        <option value="Novo">Novo</option>
+                        <option value="Usado">Usado</option>
+                        <option value="Em construção">Em construção</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Previsão de entrega</label>
+                    <input type="text" name="imo_entrega" class="w-full border rounded p-2">
+                </div>
+                <div></div>
+
+                <div>
+                    <label class="block font-medium mb-1">Número da matrícula</label>
+                    <input type="text" name="imo_matricula" class="w-full border rounded p-2">
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Número do IPTU</label>
+                    <input type="text" name="imo_iptu_num" class="w-full border rounded p-2">
+                </div>
+                <div></div>
+
+                <div class="col-span-3">
+                    <label class="block font-medium mb-1">Tipo de imóvel</label>
+                    <select name="imo_tipo" class="w-full border rounded p-2">
+                        <option value="Casa">Casa</option>
+                        <option value="Sobrado">Sobrado</option>
+                        <option value="Apartamento">Apartamento</option>
+                        <option value="Cobertura">Cobertura</option>
+                        <option value="Kitnet">Kitnet</option>
+                        <option value="Studio">Studio</option>
+                        <option value="Flat">Flat</option>
+                        <option value="Terreno">Terreno</option>
+                        <option value="Área">Área</option>
+                        <option value="Sala comercial">Sala comercial</option>
+                        <option value="Galpão">Galpão</option>
+                    </select>
+                </div>
+
+                <div><label class="block font-medium mb-1">Dormitórios</label><input type="number" name="imo_dorms" class="w-full border rounded p-2"></div>
+                <div><label class="block font-medium mb-1">Suítes</label><input type="number" name="imo_suites" class="w-full border rounded p-2"></div>
+                <div><label class="block font-medium mb-1">Banheiros sociais</label><input type="number" name="imo_banheiros" class="w-full border rounded p-2"></div>
+                <div><label class="block font-medium mb-1">Lavabos</label><input type="number" name="imo_lavabos" class="w-full border rounded p-2"></div>
+                <div><label class="block font-medium mb-1">Sala de estar</label><input type="number" name="imo_sala_estar" class="w-full border rounded p-2"></div>
+                <div><label class="block font-medium mb-1">Sala de jantar</label><input type="number" name="imo_sala_jantar" class="w-full border rounded p-2"></div>
+
+                <div class="col-span-3 flex gap-4 items-center">
+                    <label class="font-medium">Salas Integradas?</label>
+                    <label><input type="radio" name="imo_salas_integradas" value="Sim"> Sim</label>
+                    <label><input type="radio" name="imo_salas_integradas" value="Não"> Não</label>
+                    <label><input type="radio" name="imo_salas_integradas" value="Separadas"> Separadas</label>
+                </div>
+
+                <div class="col-span-3 flex flex-wrap gap-4 items-center mt-2">
+                    <label class="font-medium">Cozinha:</label>
+                    <label><input type="radio" name="imo_cozinha" value="Individual"> Individual</label>
+                    <label><input type="radio" name="imo_cozinha" value="Integrada"> Integrada</label>
+                    <label><input type="radio" name="imo_cozinha" value="Americana"> Americana</label>
+                    <input type="text" name="imo_cozinha_obs" placeholder="Observação..." class="border rounded p-1 ml-2 flex-grow">
+                </div>
+
+                <div class="col-span-3 flex flex-wrap gap-6 items-center mt-2">
+                    <div class="flex items-center gap-2">
+                        <label class="font-medium">Área de serviço:</label>
+                        <label><input type="radio" name="imo_area_servico" value="Sim"> Sim</label>
+                        <label><input type="radio" name="imo_area_servico" value="Não"> Não</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="font-medium">Depósito/hobby box:</label>
+                        <label><input type="radio" name="imo_deposito" value="Sim"> Sim</label>
+                        <label><input type="radio" name="imo_deposito" value="Não"> Não</label>
+                    </div>
+                </div>
+
+                <div class="col-span-3 mt-2">
+                    <label class="font-medium mb-1 block">Móveis planejados em:</label>
+                    <div class="flex flex-wrap gap-3">
+                        <label><input type="checkbox" name="imo_moveis_dorm"> Dormitórios</label>
+                        <label><input type="checkbox" name="imo_moveis_banh"> Banheiros</label>
+                        <label><input type="checkbox" name="imo_moveis_sala"> Sala de estar</label>
+                        <label><input type="checkbox" name="imo_moveis_coz"> Cozinha</label>
+                        <label><input type="checkbox" name="imo_moveis_serv"> Área de serviço</label>
+                        <label><input type="checkbox" name="imo_moveis_gourmet"> Área gourmet</label>
+                        <label><input type="checkbox" name="imo_moveis_escrit"> Escritório</label>
+                        <label><input type="checkbox" name="imo_moveis_hall"> Hall de entrada</label>
+                    </div>
+                </div>
+
+                <div class="col-span-3 grid grid-cols-3 gap-2 mt-2">
+                    <div><label class="block font-medium mb-1">Área terreno m²</label><input type="text" name="imo_area_terreno" class="w-full border rounded p-1"></div>
+                    <div><label class="block font-medium mb-1">Área construída m²</label><input type="text" name="imo_area_const" class="w-full border rounded p-1"></div>
+                    <div><label class="block font-medium mb-1">Área útil m²</label><input type="text" name="imo_area_util" class="w-full border rounded p-1"></div>
+                </div>
+
+                <div class="col-span-3 grid grid-cols-4 gap-2">
+                    <div><label class="block font-medium mb-1">Frente (testada) m²</label><input type="text" name="imo_med_frente" class="w-full border rounded p-1"></div>
+                    <div><label class="block font-medium mb-1">Lado direito m²</label><input type="text" name="imo_med_dir" class="w-full border rounded p-1"></div>
+                    <div><label class="block font-medium mb-1">Lado esquerdo m²</label><input type="text" name="imo_med_esq" class="w-full border rounded p-1"></div>
+                    <div><label class="block font-medium mb-1">Fundos m²</label><input type="text" name="imo_med_fun" class="w-full border rounded p-1"></div>
+                </div>
+
+                <div class="col-span-3 grid grid-cols-3 gap-2 mt-2">
+                    <div><label class="block font-medium mb-1">Local das chaves</label><input type="text" name="imo_chaves_local" class="w-full border rounded p-1"></div>
+                    <div><label class="block font-medium mb-1">Nome (contato chaves)</label><input type="text" name="imo_chaves_nome" class="w-full border rounded p-1"></div>
+                    <div><label class="block font-medium mb-1">Telefone (contato chaves)</label><input type="text" name="imo_chaves_tel" class="w-full border rounded p-1" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
+                </div>
+
+                <div class="col-span-3 grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                        <label class="block font-medium mb-1">Valor Condomínio R$</label>
+                        <input type="text" name="imo_val_cond" class="w-full border rounded p-1">
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-1">Valor IPTU R$</label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" name="imo_val_iptu" class="w-full border rounded p-1">
+                            <label><input type="radio" name="imo_iptu_tipo" value="Mensal"> Mensal</label>
+                            <label><input type="radio" name="imo_iptu_tipo" value="Anual"> Anual</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-3 mt-2 flex flex-col gap-2 border p-3 bg-gray-50 rounded">
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <label class="font-medium">Documentação “OK” e aceita financiamento?</label>
+                        <label><input type="radio" name="imo_doc_ok" value="Sim"> Sim</label>
+                        <label><input type="radio" name="imo_doc_ok" value="Não"> Não</label>
+                    </div>
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <label class="font-medium">AVERBADO na matrícula?</label>
+                        <label><input type="radio" name="imo_doc_averbado" value="Sim"> Sim</label>
+                        <label><input type="radio" name="imo_doc_averbado" value="Não"> Não</label>
+                    </div>
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <label class="font-medium">Em nome de um terceiro?</label>
+                        <label><input type="radio" name="imo_doc_terceiro" value="Sim"> Sim</label>
+                        <label><input type="radio" name="imo_doc_terceiro" value="Não"> Não</label>
+                        <input type="text" name="imo_doc_terceiro_nome" placeholder="Nome do terceiro" class="border rounded p-1 flex-grow">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. Valor e Condições -->
+            <h2 class="text-xl font-semibold mt-8 mb-4 border-b pb-2 text-orange-600">3. Valor e condições de pagamento</h2>
+            <div class="flex flex-col gap-4 mb-6 text-sm">
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <label><input type="radio" name="cond_venda_auth" value="Autorizado" required> Autorizado para venda por R$</label>
+                    <input type="text" name="cond_venda_valor" class="border rounded p-1 w-32">
+                    <label><input type="radio" name="cond_venda_auth" value="Não autorizado"> Não autorizado.</label>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <label><input type="radio" name="cond_locacao_auth" value="Autorizado" required> Autorizado para locação por R$</label>
+                    <input type="text" name="cond_locacao_valor" class="border rounded p-1 w-32">
+                    <label><input type="radio" name="cond_locacao_auth" value="Não autorizado"> Não autorizado.</label>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="font-medium">Com administração da Vetorial Imóveis?</label>
+                    <label><input type="radio" name="cond_admin" value="Sim"> Sim</label>
+                    <label><input type="radio" name="cond_admin" value="Não"> Não</label>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="font-medium">Autorizo colocação de placas?</label>
+                    <label><input type="radio" name="cond_placa" value="Sim"> Sim</label>
+                    <label><input type="radio" name="cond_placa" value="Não"> Não</label>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="font-medium">Exclusividade na venda/locação?</label>
+                    <label><input type="radio" name="cond_exclusividade" value="Sim"> Sim</label>
+                    <label><input type="radio" name="cond_exclusividade" value="Não"> Não</label>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <label class="font-medium">Aceita permuta? Qual?</label>
+                    <input type="text" name="cond_permuta" class="border rounded p-1 flex-grow">
+                </div>
+
+                <div class="mt-4 bg-gray-50 p-4 rounded border">
+                    <p class="font-bold mb-1">Venda: <span class="font-normal">6% do valor da venda (conforme tabela do CRECI)</span></p>
+                    <label class="block font-medium mb-1">Obs:</label>
+                    <textarea name="cond_obs" rows="2" class="w-full border rounded p-2 mb-2"></textarea>
+
+                    <p class="font-bold mt-2">Locação: <span class="font-normal">Primeiro Aluguel + Taxa de administração de 10% dos alugueis subsequentes (quando houver a administração da Vetorial Imóveis e Arquitetura).</span></p>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-between items-center">
+                <a href="dashboard.html" class="text-gray-600 hover:underline">Cancelar</a>
+                <button type="submit" class="bg-gray-800 text-white px-6 py-3 rounded hover:bg-black font-bold">Gerar Ficha</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        const brokerEmail = localStorage.getItem('broker_email');
+        if (!brokerEmail) window.location.href = 'index.html';
+
+        function generateToken() {
+            return Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
+        }
+
+        document.getElementById('novaFichaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!CONFIG_APPS_SCRIPT_URL) {
+                alert("Configure a URL do Apps Script primeiro no config.js!");
+                return;
+            }
+
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            const formData = new FormData(e.target);
+            const dataObj = {};
+            formData.forEach((value, key) => {
+                // handle checkboxes logic if multiple
+                if(dataObj[key] !== undefined) {
+                    if(!Array.isArray(dataObj[key])){
+                        dataObj[key] = [dataObj[key]];
+                    }
+                    dataObj[key].push(value);
+                } else {
+                    dataObj[key] = value;
+                }
+            });
+
+            // Parse checkboxes for moves
+            const moveis = [];
+            if(dataObj.imo_moveis_dorm) moveis.push('Dormitórios');
+            if(dataObj.imo_moveis_banh) moveis.push('Banheiros');
+            if(dataObj.imo_moveis_sala) moveis.push('Sala de estar');
+            if(dataObj.imo_moveis_coz) moveis.push('Cozinha');
+            if(dataObj.imo_moveis_serv) moveis.push('Área de serviço');
+            if(dataObj.imo_moveis_gourmet) moveis.push('Área gourmet');
+            if(dataObj.imo_moveis_escrit) moveis.push('Escritório');
+            if(dataObj.imo_moveis_hall) moveis.push('Hall de entrada');
+            dataObj.moveis_list = moveis.join(', ');
+
+            const token = generateToken();
+            const phone = document.getElementById('proprietario_telefone').value.replace(/\D/g, '');
+
+            const payload = {
+                action: 'createForm',
+                brokerEmail: brokerEmail,
+                token: token,
+                ownerName: dataObj.proprietario_nome,
+                phone: phone,
+                dataJson: JSON.stringify(dataObj)
+            };
+
+            try {
+                // Since google apps script web apps don't handle cors nicely for typical POST json without redirects
+                await fetch(CONFIG_APPS_SCRIPT_URL, {
+                    method: 'POST',
+
+
+                    body: JSON.stringify(payload)
+                });
+
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('novaFichaForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+
+                const baseUrl = window.location.origin + window.location.pathname.replace('nova_ficha.html', '');
+                const assinarUrl = `${baseUrl}assinar.html?token=${token}`;
+                const mensagem = encodeURIComponent(`Olá! Aqui está o link para revisar e assinar a ficha do seu imóvel: ${assinarUrl}`);
+                const linkWa = `https://wa.me/55${phone}?text=${mensagem}`;
+
+                document.getElementById('waLinkBtn').href = linkWa;
+                window.scrollTo(0, 0);
+
+            } catch (err) {
+                console.error(err);
+                alert("Erro ao salvar no Google Sheets.");
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

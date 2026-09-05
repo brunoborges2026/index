@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assinar Ficha - Vetorial Imóveis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <style>
+        .signature-wrapper { position: relative; width: 100%; height: 200px; user-select: none; border: 1px solid #ccc; border-radius: 4px; background-color: #fff; }
+        .signature-pad { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #ff7a00; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-2 md:p-8">
+
+    <div id="loading" class="loading-overlay">
+        <div id="spinner" class="spinner"></div>
+        <div id="loadingText" class="text-lg font-bold text-orange-600 text-center px-4">Iniciando verificação de segurança...</div>
+        <button id="retryGeoBtn" class="mt-4 bg-orange-600 text-white px-4 py-2 rounded hidden" onclick="requestGeolocation()">Tentar Novamente</button>
+    </div>
+
+    <div id="content" class="max-w-4xl mx-auto bg-white p-4 md:p-10 rounded shadow" style="display:none;">
+
+        <div class="flex flex-col md:flex-row items-center justify-between mb-8 pb-4 border-b-4 border-orange-500 text-center md:text-left gap-4">
+            <div>
+                <h1 class="text-3xl font-bold">VETORIAL</h1>
+                <p class="text-sm font-semibold tracking-widest">IMÓVEIS E ARQUITETURA</p>
+            </div>
+            <div class="text-sm">
+                <p>(12) 3882-5888</p>
+                <p>www.vetorialimoveisearquitetura.com</p>
+                <p>Av Ver. Aristides Anizio dos Santos, 40, Indaiá, Caraguatatuba-SP</p>
+            </div>
+        </div>
+
+        <h2 class="text-center text-xl md:text-2xl font-bold uppercase mb-6 bg-gray-800 text-white py-2 rounded px-2">
+            Autorização de Comercialização de Imóvel
+        </h2>
+
+        <div id="formDataContainer" class="text-sm text-justify"></div>
+
+        <form id="signature-form" class="mt-8 bg-gray-50 p-4 md:p-6 rounded border border-gray-200">
+
+            <div class="mb-6">
+                <label class="block font-bold mb-2 text-red-600">
+                    📸 1. Selfie segurando documento com foto (RG/CNH)
+                </label>
+                <p class="text-xs text-gray-500 mb-2">Para validade jurídica da assinatura, é necessário anexar uma foto do seu rosto segurando o documento ao lado.</p>
+
+                <button type="button" id="start_camera_btn" class="bg-gray-800 text-white px-4 py-3 rounded font-bold w-full md:w-auto hover:bg-black transition flex items-center justify-center gap-2 mb-2">📸 Abrir Câmera e Tirar Selfie</button>
+
+                <div id="camera_container" style="display:none;" class="mb-4 flex-col items-center gap-2 p-2 border border-orange-300 rounded bg-orange-50">
+                    <video id="camera_video" autoplay playsinline style="width: 100%; max-width: 400px; border-radius: 8px; border: 2px solid #ff7a00;"></video>
+                    <button type="button" id="take_photo_btn" class="bg-green-600 text-white px-6 py-2 rounded font-bold mt-2 hover:bg-green-700 w-full max-w-[400px]">✓ Capturar Agora</button>
+                </div>
+
+                <div id="preview_container" style="display:none;" class="mb-2 flex-col items-center gap-2">
+                    <img id="selfie_preview" style="width: 100%; max-width: 400px; border-radius: 8px; border: 1px solid #ccc;">
+                    <button type="button" id="retake_photo_btn" class="text-red-600 underline text-sm mt-2">Tirar outra foto</button>
+                </div>
+
+                <div id="fallback_input_container">
+                    <p class="text-xs font-semibold mb-1">Ou envie do arquivo/câmera do celular:</p>
+                    <input type="file" id="selfie_input" accept="image/*" capture="user" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+                </div>
+
+                <canvas id="selfie_canvas" style="display:none;"></canvas>
+            </div>
+
+            <div class="mb-6">
+                <label class="flex items-start font-bold text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="accept_terms" required class="mt-1 mr-2 w-5 h-5 text-orange-600">
+                    <span class="text-sm">Li e concordo com os termos acima e confirmo a veracidade das informações e documentos apresentados.</span>
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2 text-gray-700">✍️ 2. Assinatura do Proprietário (Touch ou Mouse):</label>
+                <div class="signature-wrapper">
+                    <canvas id="signature-pad" class="signature-pad"></canvas>
+                </div>
+                <button type="button" id="clear-signature" class="mt-2 text-sm text-red-600 underline font-semibold">Refazer Assinatura</button>
+            </div>
+
+            <button type="submit" id="submitBtn" class="w-full bg-green-600 text-white font-bold py-4 px-4 rounded hover:bg-green-700 transition text-lg mt-4 shadow-lg">
+                Assinar e Enviar Documento
+            </button>
+            <p class="text-xs text-gray-500 mt-2 text-center">Data, Hora, IP e Localização GPS já capturados de forma segura.</p>
+        </form>
+
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        let geoLat = null;
+        let geoLon = null;
+        let compressedSelfieBase64 = null;
+
+        window.onload = () => {
+            if (!token) {
+                showError("Token inválido.");
+                return;
+            }
+            requestGeolocation();
+        };
+
+        let videoStream = null;
+
+        document.getElementById('start_camera_btn').addEventListener('click', async () => {
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                const video = document.getElementById('camera_video');
+                video.srcObject = videoStream;
+                document.getElementById('start_camera_btn').style.display = 'none';
+                document.getElementById('camera_container').style.display = 'flex';
+                document.getElementById('fallback_input_container').style.display = 'none';
+            } catch (err) {
+                alert("Não foi possível acessar a câmera. Use a opção de envio de arquivo abaixo.");
+            }
+        });
+
+        document.getElementById('take_photo_btn').addEventListener('click', () => {
+            const video = document.getElementById('camera_video');
+            const canvas = document.getElementById('selfie_canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            compressedSelfieBase64 = canvas.toDataURL('image/jpeg', 0.8);
+            document.getElementById('selfie_preview').src = compressedSelfieBase64;
+            document.getElementById('camera_container').style.display = 'none';
+            document.getElementById('preview_container').style.display = 'flex';
+        });
+
+        document.getElementById('retake_photo_btn').addEventListener('click', () => {
+            compressedSelfieBase64 = null;
+            document.getElementById('preview_container').style.display = 'none';
+            document.getElementById('camera_container').style.display = 'flex';
+        });
+
+        function showError(msg) {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('loadingText').innerText = msg;
+            document.getElementById('retryGeoBtn').style.display = 'block';
+        }
+
+        function requestGeolocation() {
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('retryGeoBtn').style.display = 'none';
+            document.getElementById('loadingText').innerText = "Solicitando permissão de localização (Obrigatório)...";
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        geoLat = position.coords.latitude;
+                        geoLon = position.coords.longitude;
+                        loadForm();
+                    },
+                    (error) => {
+                        if(error.code === error.PERMISSION_DENIED) {
+                            showError("Permissão de Localização negada. É obrigatório permitir o GPS para validade jurídica do documento. Recarregue a página e permita o acesso.");
+                        } else {
+                            showError("Não foi possível obter a localização. Verifique o GPS do seu aparelho.");
+                        }
+                    },
+                    { enableHighAccuracy: true, timeout: 15000 }
+                );
+            } else {
+                showError("Seu navegador não suporta geolocalização.");
+            }
+        }
+
+        async function loadForm() {
+            document.getElementById('loadingText').innerText = "Buscando dados da ficha...";
+            try {
+                const result = await apiCall({action: 'getFormByToken', token: token});
+
+                if (!result.found) {
+                    showError("Ficha não encontrada.");
+                    return;
+                }
+
+                if (result.status === 'Assinada') {
+                    showError("Esta ficha já foi assinada.");
+                    document.getElementById('loadingText').innerHTML += `<br><br><a href="gerar_pdf.html?token=${token}" class="text-blue-600 underline">Ver PDF da Ficha</a>`;
+                    document.getElementById('retryGeoBtn').style.display = 'none';
+                    return;
+                }
+
+                renderFormData(JSON.parse(result.dataJson));
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                initSignaturePad();
+
+            } catch (error) {
+                showError("Erro de conexão ao carregar ficha.");
+            }
+        }
+
+        function renderFormData(data) {
+            const container = document.getElementById('formDataContainer');
+
+            const html = `
+                <p class="mb-4 text-sm md:text-base leading-relaxed">
+                    Eu, <strong>${data.proprietario_nome || ''}</strong> proprietário do imóvel abaixo descrito,
+                    portador do RG nº: <strong>${data.proprietario_rg || ''}</strong> e CPF nº: <strong>${data.proprietario_cpf || ''}</strong>,
+                    autorizo a “VETORIAL IMÓVEIS E ARQUITETURA”, Inscrita no CRECI sob nº 30038-J, com sede na Avenida
+                    Vereador Aristides Anízio dos Santos, 40 - Indaiá, a intermediar a VENDA ou LOCAÇÃO do imóvel
+                    abaixo relacionado:
+                </p>
+                <div class="bg-gray-50 p-4 border rounded mb-6 text-sm">
+                    <p><strong>Logradouro:</strong> ${data.proprietario_rua || ''}, <strong>Nº:</strong> ${data.proprietario_num || ''}, <strong>Comp:</strong> ${data.proprietario_comp || ''}</p>
+                    <p><strong>Bairro:</strong> ${data.proprietario_bairro || ''} <strong>Cidade:</strong> ${data.proprietario_cidade || ''}, <strong>Estado:</strong> ${data.proprietario_estado || ''} <strong>CEP:</strong> ${data.proprietario_cep || ''}</p>
+                    <p><strong>Data de Nascimento:</strong> ${data.proprietario_nasc || ''}</p>
+                    <p><strong>Estado Civil:</strong> ${data.proprietario_estado_civil || ''} | <strong>Nacionalidade:</strong> ${data.proprietario_nacionalidade || ''}</p>
+                    <p><strong>Profissão:</strong> ${data.proprietario_profissao || ''}</p>
+                    <p><strong>E-mail:</strong> ${data.proprietario_email || ''} | <strong>Telefone:</strong> ${data.proprietario_telefone || ''}</p>
+                </div>
+
+                <h3 class="font-bold text-lg mb-2 text-orange-600 border-b pb-1">Descrição do Imóvel</h3>
+                <div class="bg-gray-50 p-4 border rounded mb-6 text-sm grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <p><strong>Estado:</strong> ${data.imo_estado || ''} | <strong>Entrega:</strong> ${data.imo_entrega || ''}</p>
+                    <p><strong>Matrícula:</strong> ${data.imo_matricula || ''} | <strong>IPTU nº:</strong> ${data.imo_iptu_num || ''}</p>
+                    <p class="md:col-span-2"><strong>Tipo:</strong> ${data.imo_tipo || ''}</p>
+
+                    <p><strong>Dormitórios:</strong> ${data.imo_dorms || ''} | <strong>Suítes:</strong> ${data.imo_suites || ''}</p>
+                    <p><strong>Banheiros:</strong> ${data.imo_banheiros || ''} | <strong>Lavabos:</strong> ${data.imo_lavabos || ''}</p>
+                    <p><strong>Salas (Estar/Jantar):</strong> ${data.imo_sala_estar || ''} / ${data.imo_sala_jantar || ''} - Integradas? ${data.imo_salas_integradas || ''}</p>
+                    <p><strong>Vagas estacionamento:</strong> ${data.imo_vagas || ''} | <strong>Coberta:</strong> ${data.imo_vaga_cobertura || ''} | <strong>Tipo:</strong> ${data.imo_vaga_tipo || ''}</p>
+                    <p><strong>Cozinha:</strong> ${data.imo_cozinha || ''} ${data.imo_cozinha_obs ? '('+data.imo_cozinha_obs+')' : ''}</p>
+                    <p><strong>Área serviço:</strong> ${data.imo_area_servico || ''} | <strong>Depósito:</strong> ${data.imo_deposito || ''}</p>
+                    <p class="md:col-span-2"><strong>Móveis planejados:</strong> ${data.moveis_list || 'Nenhum'}</p>
+
+                    <p><strong>Área Terreno:</strong> ${data.imo_area_terreno || ''}m² | <strong>Construída:</strong> ${data.imo_area_const || ''}m² | <strong>Útil:</strong> ${data.imo_area_util || ''}m²</p>
+                    <p><strong>Frente:</strong> ${data.imo_med_frente || ''}m² | <strong>Dir:</strong> ${data.imo_med_dir || ''}m² | <strong>Esq:</strong> ${data.imo_med_esq || ''}m² | <strong>Fun:</strong> ${data.imo_med_fun || ''}m²</p>
+
+                    <p class="md:col-span-2"><strong>Local Chaves:</strong> ${data.imo_chaves_local || ''} - Nome: ${data.imo_chaves_nome || ''} - Tel: ${data.imo_chaves_tel || ''}</p>
+                    <p><strong>Valor Condomínio:</strong> R$ ${data.imo_val_cond || ''}</p>
+                    <p><strong>Valor IPTU:</strong> R$ ${data.imo_val_iptu || ''} (${data.imo_iptu_tipo || ''})</p>
+                    <p><strong>Doc OK / Financiamento?:</strong> ${data.imo_doc_ok || ''}</p>
+                    <p><strong>Averbado?:</strong> ${data.imo_doc_averbado || ''}</p>
+                    <p class="md:col-span-2"><strong>Terceiro?:</strong> ${data.imo_doc_terceiro || ''} - Nome: ${data.imo_doc_terceiro_nome || ''}</p>
+                </div>
+
+                <h3 class="font-bold text-lg mb-2 text-orange-600 border-b pb-1">Valor e condições de pagamento</h3>
+                <div class="bg-gray-50 p-4 border rounded mb-6 text-sm">
+                    <p>(${data.cond_venda_auth === 'Autorizado' ? 'X' : ' '}) Autorizado para venda por R$ ${data.cond_venda_valor || ''} &nbsp;&nbsp;&nbsp; (${data.cond_venda_auth !== 'Autorizado' ? 'X' : ' '}) Não autorizado</p>
+                    <p>(${data.cond_locacao_auth === 'Autorizado' ? 'X' : ' '}) Autorizado para locação por R$ ${data.cond_locacao_valor || ''} &nbsp;&nbsp;&nbsp; (${data.cond_locacao_auth !== 'Autorizado' ? 'X' : ' '}) Não autorizado</p>
+                    <br>
+                    <p><strong>Admin Vetorial:</strong> ${data.cond_admin || ''} | <strong>Placas:</strong> ${data.cond_placa || ''} | <strong>Exclusividade:</strong> ${data.cond_exclusividade || ''}</p>
+                    <p><strong>Permuta:</strong> ${data.cond_permuta || 'Não'}</p>
+                    <br>
+                    <p><strong>Venda:</strong> 6% do valor da venda (conforme tabela do CRECI)</p>
+                    <p><strong>Obs:</strong> ${data.cond_obs || ''}</p>
+                    <p class="mt-2"><strong>Locação:</strong> Primeiro Aluguel + Taxa de administração de 10% dos alugueis subsequentes (quando houver a administração da Vetorial Imóveis e Arquitetura).</p>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // Image compression for selfie
+        document.getElementById('selfie_input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('selfie_canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    compressedSelfieBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        let signaturePad;
+
+        function initSignaturePad() {
+            const canvas = document.getElementById('signature-pad');
+            signaturePad = new SignaturePad(canvas, { backgroundColor: '#ffffff', penColor: '#000000' });
+
+            function resizeCanvas() {
+                const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+                const wrapper = canvas.parentElement;
+                canvas.width = wrapper.offsetWidth * ratio;
+                canvas.height = wrapper.offsetHeight * ratio;
+                canvas.getContext("2d").scale(ratio, ratio);
+                signaturePad.clear();
+            }
+            window.addEventListener("resize", resizeCanvas);
+            resizeCanvas();
+
+            document.getElementById('clear-signature').addEventListener('click', () => { signaturePad.clear(); });
+        }
+
+        document.getElementById('signature-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!compressedSelfieBase64) {
+                alert("Por favor, anexe a foto da Selfie com o Documento.");
+                return;
+            }
+
+            if (signaturePad.isEmpty()) {
+                alert("Por favor, assine no quadro indicado.");
+                return;
+            }
+
+            if (!geoLat || !geoLon) {
+                alert("A localização GPS é obrigatória e não foi capturada. Recarregue a página.");
+                return;
+            }
+
+            const signatureBase64 = signaturePad.toDataURL();
+            const userAgent = navigator.userAgent;
+
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('loadingText').innerText = "Salvando documento de forma segura. Isso pode levar alguns segundos devido ao envio da imagem...";
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('loading').style.display = 'flex';
+
+            const payload = {
+                action: 'signForm',
+                token: token,
+                signatureBase64: signatureBase64,
+                selfieBase64: compressedSelfieBase64,
+                lat: geoLat,
+                lon: geoLon,
+                userAgent: userAgent
+            };
+
+            try {
+                await apiCall(payload);
+                window.location.href = `gerar_pdf.html?token=${token}`;
+            } catch (error) {
+                showError("Erro ao enviar assinatura. Verifique sua conexão.");
+            }
+        });
+    </script>
+</body>
+</html>

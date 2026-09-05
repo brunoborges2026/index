@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerando PDF - Vetorial Imóveis</title>
+    <style>
+        body { font-family: Helvetica, Arial, sans-serif; background: #222; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .loading { font-size: 1.5rem; font-weight: bold; color: #ff7a00; margin-top: 50px; text-align: center; }
+
+        .pdf-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fff;
+            padding: 15mm;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            font-size: 11px;
+            color: #111;
+            display: none;
+            position: relative;
+            margin-bottom: 20mm;
+            page-break-after: always;
+        }
+
+        .header { border-bottom: 3px solid #ff7a00; padding-bottom: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .header h1 { margin: 0; font-size: 22px; color: #000; }
+        .header p { margin: 0; font-size: 9px; color: #555; }
+        .header-left { text-align: left; }
+        .header-right { text-align: right; }
+
+        .title { text-align: center; background-color: #ff7a00; color: #fff; padding: 5px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        .captador { text-align: right; font-weight: bold; font-size: 10px; margin-bottom: 15px; color: #444; }
+
+        .section-title { font-weight: bold; margin-top: 10px; margin-bottom: 5px; font-size: 12px; color: #ff7a00; border-bottom: 1px solid #ccc; padding-bottom: 2px;}
+        .box { padding: 5px; text-align: justify; line-height: 1.4; }
+
+        .signature-section { margin-top: 20px; text-align: center; display: flex; flex-direction: column; align-items: center;}
+        .signature-img { max-height: 60px; display: block; margin: 0 auto; }
+        .selfie-img { max-height: 200px; max-width: 100%; display: block; margin: 10px auto; border: 2px solid #ff7a00; border-radius: 8px;}
+        .signature-line { border-top: 1px solid #000; width: 60%; margin: 5px auto; }
+        .metadata { font-size: 8px; color: #666; text-align: center; margin-top: 5px; line-height: 1.2; }
+
+        .btn-download {
+            position: fixed; top: 20px; right: 20px; background: #ff7a00; color: white;
+            border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px;
+            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: none; z-index: 1000;
+        }
+        .btn-download:hover { background: #e06900; }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .pdf-page { box-shadow: none; padding: 0; margin-bottom: 0; }
+            .btn-download { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">Carregando PDF da Nuvem...</div>
+    <button id="downloadBtn" class="btn-download" onclick="window.print()">Imprimir / Salvar PDF</button>
+
+    <div id="pdfContent"></div>
+
+    <script src="config.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            document.getElementById('loading').innerText = "Token inválido.";
+        } else {
+            loadFormForPDF();
+        }
+
+        async function loadFormForPDF() {
+            try {
+                const result = await apiCall({action: 'getFormByToken', token: token});
+
+                if (!result.found || result.status !== 'Assinada') {
+                    document.getElementById('loading').innerText = "Ficha não encontrada ou ainda não assinada.";
+                    return;
+                }
+
+                const data = JSON.parse(result.dataJson);
+                buildPDFHTML(data, result);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('downloadBtn').style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loading').innerText = "Erro ao carregar dados do servidor.";
+            }
+        }
+
+        function extractName(email) {
+            if(!email) return '';
+            let name = email.split('@')[0];
+            return name.charAt(0).toUpperCase() + name.slice(1);
+        }
+
+        function formatCurrency(val) {
+            if(!val) return '';
+            let num = val.replace(/\D/g, '');
+            if(!num) return val;
+            num = (parseInt(num) / 100).toFixed(2);
+            return num.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function fixImageUrl(url) {
+            if (!url) return '';
+            if (url.startsWith('data:image')) return url;
+
+            // Extract Google Drive ID if present
+            let match = url.match(/id=([a-zA-Z0-9_-]+)/);
+            if (!match) match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+
+            if (match && match[1]) {
+                // Use thumbnail endpoint as a fallback for embedding Drive images
+                return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
+            }
+            return url;
+        }
+
+        function buildPDFHTML(data, meta) {
+            const container = document.getElementById('pdfContent');
+            const captadorNome = extractName(meta.brokerEmail);
+            const signatureImgSrc = fixImageUrl(meta.signatureUrl);
+            const selfieImgSrc = fixImageUrl(meta.selfieUrl);
+
+            // Format Date safely
+            let day = '___', monthStr = '__________', year = '2026';
+            if(meta.signedAt) {
+                try {
+                    const dateObj = new Date(meta.signedAt);
+                    if (!isNaN(dateObj.getTime())) {
+                        day = String(dateObj.getDate()).padStart(2, '0');
+                        year = dateObj.getFullYear();
+                        const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+                        monthStr = months[dateObj.getMonth()];
+                    } else {
+                        // Fallback to split if it's not a standard parseable date
+                        const parts = meta.signedAt.split(' ')[0].split(/[\/-]/);
+                        if(parts.length >= 3) {
+                            // Assumes YYYY-MM-DD or DD/MM/YYYY. Usually Apps Script sends full ISO or localized string.
+                            // If it contains T, it's ISO.
+                            if (meta.signedAt.includes('T')) {
+                                day = parts[2].substring(0, 2);
+                                year = parts[0];
+                                monthStr = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"][parseInt(parts[1]) - 1] || monthStr;
+                            } else if (parts[2].length === 4) {
+                                // DD/MM/YYYY
+                                day = parts[0];
+                                year = parts[2];
+                                monthStr = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"][parseInt(parts[1]) - 1] || monthStr;
+                            } else if (parts[0].length === 4) {
+                                // YYYY-MM-DD
+                                day = parts[2];
+                                year = parts[0];
+                                monthStr = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"][parseInt(parts[1]) - 1] || monthStr;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error parsing date: ", e);
+                }
+            }
+
+            let vendaFmt = data.cond_venda_valor ? formatCurrency(data.cond_venda_valor) : '';
+            let locacaoFmt = data.cond_locacao_valor ? formatCurrency(data.cond_locacao_valor) : '';
+            let condFmt = data.imo_val_cond ? formatCurrency(data.imo_val_cond) : '';
+            let iptuFmt = data.imo_val_iptu ? formatCurrency(data.imo_val_iptu) : '';
+
+            container.innerHTML = `
+                <!-- PÁGINA 1: FICHA -->
+                <div class="pdf-page" style="display:block;">
+                    <div class="header" style="align-items: center;">
+                        <div class="header-left">
+                            <img src="assets/logo.png" alt="Vetorial Logo" style="max-height: 50px;">
+                        </div>
+                        <div class="header-right">
+                            <p>(12) 3882-5888</p>
+                            <p>www.vetorialimoveisearquitetura.com</p>
+                            <p>Av Ver. Aristides Anizio dos Santos, 40, Indaiá, Caraguatatuba-SP</p>
+                        </div>
+                    </div>
+
+                    <div class="title">Autorização de Comercialização de Imóvel</div>
+                    <div class="captador">Captador: ${captadorNome}</div>
+
+                    <div class="box">
+                        <p>
+                            Eu, <strong>${data.proprietario_nome || '___________________________'}</strong> proprietário do imóvel abaixo
+                            descrito, portador do RG nº: <strong>${data.proprietario_rg || '_______________'}</strong> e CPF nº: <strong>${data.proprietario_cpf || '_____________________'}</strong>, autorizo
+                            a “VETORIAL IMÓVEIS E ARQUITETURA”, Inscrita no CRECI sob nº 30038-J, com sede na Avenida
+                            Vereador Aristides Anízio dos Santos, 40 - Indaiá, a intermediar a VENDA ou LOCAÇÃO do imóvel
+                            abaixo relacionado:
+                        </p>
+                        <p style="margin-top:5px;">
+                            Logradouro: <strong>${data.proprietario_rua || '_______________________'}</strong> , Nº: <strong>${data.proprietario_num || '_____'}</strong> , Complemento: <strong>${data.proprietario_comp || '________'}</strong><br>
+                            Bairro: <strong>${data.proprietario_bairro || '_________________'}</strong> Cidade: <strong>${data.proprietario_cidade || '_________________'}</strong> , Estado: <strong>${data.proprietario_estado || '___'}</strong> CEP: <strong>${data.proprietario_cep || '________'}</strong>
+                        </p>
+                        <p style="margin-top:5px;">
+                            Data de Nascimento: <strong>${data.proprietario_nasc ? data.proprietario_nasc.split('-').reverse().join('/') : ''}</strong> | Estado Civil: <strong>${data.proprietario_estado_civil || ''}</strong> | Nacionalidade: <strong>${data.proprietario_nacionalidade || ''}</strong><br>
+                            Profissão: <strong>${data.proprietario_profissao || ''}</strong> | E-mail: <strong>${data.proprietario_email || ''}</strong> | Telefone: <strong>${data.proprietario_telefone || ''}</strong>
+                        </p>
+                    </div>
+
+                    <div class="section-title">Descrição do Imóvel</div>
+                    <div class="box" style="border:1px solid #ccc; padding:8px;">
+                        <p>
+                            Logradouro: <strong>${data.imo_rua || '_______________________'}</strong> , Nº: <strong>${data.imo_num || '_____'}</strong> , Complemento: <strong>${data.imo_comp || '________'}</strong><br>
+                            Bairro: <strong>${data.imo_bairro || '_________________'}</strong> Cidade: <strong>${data.imo_cidade || '_________________'}</strong> , Estado: <strong>${data.imo_estado_uf || '___'}</strong> CEP: <strong>${data.imo_cep || '________'}</strong>
+                        </p>
+                        <hr style="margin: 5px 0; border: 0; border-top: 1px solid #eee;">
+                        <p><strong>Estado do imóvel:</strong> ${data.imo_estado || ''} | <strong>Previsão de entrega:</strong> ${data.imo_entrega || ''}</p>
+                        <p><strong>Número da matrícula:</strong> ${data.imo_matricula || ''} | <strong>Número do IPTU:</strong> ${data.imo_iptu_num || ''}</p>
+                        <p><strong>Tipo de imóvel:</strong> ${data.imo_tipo || ''}</p>
+                        <p>
+                            <strong>Quantidade de dormitórios:</strong> ${data.imo_dorms || ''}
+                            <strong>Suítes:</strong> ${data.imo_suites || ''}
+                            <strong>Banheiros sociais:</strong> ${data.imo_banheiros || ''}
+                            <strong>Lavabos:</strong> ${data.imo_lavabos || ''}
+                        </p>
+                        <p>
+                            <strong>Sala de estar:</strong> ${data.imo_sala_estar || ''}
+                            <strong>Sala de jantar:</strong> ${data.imo_sala_jantar || ''}
+                            <strong>Integradas?:</strong> ${data.imo_salas_integradas || ''}
+                        </p>
+                        <p><strong>Vagas de estacionamento:</strong> ${data.imo_vagas || ''} | <strong>Coberta:</strong> ${data.imo_vaga_cobertura || ''} | <strong>Tipo:</strong> ${data.imo_vaga_tipo || ''}</p>
+                        <p><strong>Cozinha:</strong> ${data.imo_cozinha || ''} <strong>Observação:</strong> ${data.imo_cozinha_obs || ''}</p>
+                        <p><strong>Área de serviço:</strong> ${data.imo_area_servico || ''} | <strong>Depósito/hobby box:</strong> ${data.imo_deposito || ''}</p>
+                        <p><strong>Móveis planejados em:</strong> ${data.moveis_list || ''}</p>
+                        <p>
+                            <strong>Área de terreno m²:</strong> ${data.imo_area_terreno || ''}
+                            <strong>Área construída m²:</strong> ${data.imo_area_const || ''}
+                            <strong>Área útil m²:</strong> ${data.imo_area_util || ''}
+                        </p>
+                        <p>
+                            <strong>Frente m² (testada):</strong> ${data.imo_med_frente || ''}
+                            <strong>Lado direito m²:</strong> ${data.imo_med_dir || ''}
+                            <strong>Lado esquerdo m²:</strong> ${data.imo_med_esq || ''}
+                            <strong>Fundos m²:</strong> ${data.imo_med_fun || ''}
+                        </p>
+                        <p><strong>Local das chaves:</strong> ${data.imo_chaves_local || ''} <strong>Nome:</strong> ${data.imo_chaves_nome || ''} <strong>Telefone:</strong> ${data.imo_chaves_tel || ''}</p>
+                        <p><strong>Valor do condomínio:</strong> R$ ${condFmt} | <strong>Valor do IPTU:</strong> R$ ${iptuFmt} (${data.imo_iptu_tipo || ''})</p>
+                        <p><strong>O Imóvel está com a documentação “OK” e aceita financiamento bancário?:</strong> ${data.imo_doc_ok || ''}</p>
+                        <p><strong>Imóvel encontra-se AVERBADO na matrícula?:</strong> ${data.imo_doc_averbado || ''}</p>
+                        <p><strong>Imóvel encontra-se em nome de um terceiro?:</strong> ${data.imo_doc_terceiro || ""} <strong>Nome:</strong> ${data.imo_doc_terceiro_nome || ""}</p>
+                    </div>
+
+                    <div class="section-title">Valor e condições de pagamento</div>
+                    <div class="box">
+                        <p>( ${data.cond_venda_auth === 'Autorizado' ? 'X' : ' '} ) Autorizado para a venda pelo valor de R$ <strong>${vendaFmt}</strong> &nbsp; ( ${data.cond_venda_auth !== 'Autorizado' ? 'X' : ' '} ) Não autorizado.</p>
+                        <p>( ${data.cond_locacao_auth === 'Autorizado' ? 'X' : ' '} ) Autorizo para a locação pelo valor de R$ <strong>${locacaoFmt}</strong> &nbsp; ( ${data.cond_locacao_auth !== 'Autorizado' ? 'X' : ' '} ) Não autorizado.</p>
+                        <p><strong>Com administração da Vetorial Imóveis e Arquitetura:</strong> ${data.cond_admin || ''}</p>
+                        <p><strong>Autorizo colocacação de placas no imóvel:</strong> ${data.cond_placa || ''}</p>
+                        <p><strong>A Vetorial Imóveis e Arquitetura tem exclusividade na venda/locação do imóvel:</strong> ${data.cond_exclusividade || ''}</p>
+                        <p><strong>Aceita permuta? Qual?</strong> ${data.cond_permuta || '__________________________'}</p>
+                        <br>
+                        <p><strong>Venda:</strong> 6% do valor da venda (conforme tabela do CRECI)</p>
+                        <p><strong>Obs:</strong> ${data.cond_obs || '________________________________________________'}</p>
+                        <p style="margin-top:5px;"><strong>Locação:</strong> Primeiro Aluguel + Taxa de administração de 10% dos alugueis subsequentes (quando houver a administração da Vetorial Imóveis e Arquitetura).</p>
+                    </div>
+
+                    <div class="box" style="margin-top: 10px;">
+                        Autorizo a comercialização do imóvel conforme especificado acima, bem como a divulgação das condições nos sites, portais, jornais, revistas, cartazes, redes sociais e todo tipo de publicidade elaborada pela “VETORIAL IMÓVEIS E ARQUITETURA”, CRECI 30038-J.
+                    </div>
+
+                    <div style="text-align: right; margin-top: 10px; font-weight: bold;">
+                        Caraguatatuba, ${day} de ${monthStr} de ${year}.
+                    </div>
+
+                    <div class="signature-section">
+                        <img src="${signatureImgSrc}" class="signature-img">
+                        <div class="signature-line"></div>
+                        <strong>Assinatura do Proprietário</strong>
+                    </div>
+                </div>
+
+                <!-- PÁGINA 2: ANEXO -->
+                <div class="pdf-page" style="display:block;">
+                    <div class="header" style="align-items: center;">
+                        <div class="header-left">
+                            <img src="assets/logo.png" alt="Vetorial Logo" style="max-height: 50px;">
+                            <p style="font-weight: bold; margin-top: 5px; font-size: 11px;">ANEXO DE AUTENTICAÇÃO</p>
+                        </div>
+                        <div class="header-right">
+                            <p>Código de Verificação:</p>
+                            <p><strong>${token}</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="title" style="background:#555;">Documento de Autenticidade (Selfie)</div>
+                    <div class="box" style="text-align:center;">
+                        <p>Para garantir a validade jurídica desta autorização, o proprietário anexou a imagem abaixo em tempo real juntamente com os metadados de assinatura.</p>
+                    </div>
+
+                    ${selfieImgSrc ? `<img src="${selfieImgSrc}" class="selfie-img" alt="Selfie com RG">` : '<p style="text-align:center;color:red;">Selfie não fornecida.</p>'}
+
+                    <div style="margin-top: 40px; border-top:1px solid #ccc; padding-top: 10px;">
+                        <strong>Metadados da Assinatura Digital:</strong>
+                        <div class="metadata" style="text-align:left; font-size:10px; margin-top:10px;">
+                            <strong>Data/Hora do Servidor:</strong> ${meta.signedAt}<br>
+                            <strong>Localização GPS (Latitude/Longitude):</strong> ${meta.lat || 'N/A'}, ${meta.lon || 'N/A'}<br>
+                            <strong>IP / Dispositivo do Assinante:</strong> ${meta.userAgent || 'N/A'}<br>
+                            <strong>Hash Criptográfico do Documento:</strong> ${token}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

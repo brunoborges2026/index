@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Vetorial Imóveis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .header-brand { color: #ff7a00; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="header-brand">Painel do Corretor</h2>
+        <div>
+            <a href="admin.html" class="btn btn-outline-danger" id="adminBtn" style="display:none;">Voltar p/ Admin</a>
+            <button id="logoutBtn" class="btn btn-outline-dark">Sair</button>
+        </div>
+    </div>
+
+    <div class="card mb-4" id="novaFichaCard">
+        <div class="card-body">
+            <h5 class="card-title">Bem-vindo, <span id="brokerName"></span></h5>
+            <p class="card-text">Use o botão abaixo para criar uma nova ficha de Autorização de Comercialização de Imóvel.</p>
+            <a href="nova_ficha.html" class="btn btn-dark">Nova Ficha</a>
+        </div>
+    </div>
+
+    <h4>Fichas Recentes</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Data</th>
+                    <th>Corretor</th>
+                    <th>Proprietário</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="formsTableBody">
+                <tr>
+                    <td colspan="5" class="text-center" id="loadingMsg">Carregando fichas...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+    const brokerEmail = localStorage.getItem('broker_email');
+    if (!brokerEmail) {
+        window.location.href = 'index.html';
+    }
+
+    const isAdmin = (brokerEmail === 'ADMIN');
+
+    document.getElementById('brokerName').innerText = isAdmin ? 'Administrador' : brokerEmail;
+
+    if (isAdmin) {
+        document.getElementById('adminBtn').style.display = 'inline-block';
+        document.getElementById('novaFichaCard').style.display = 'none'; // Admin just manages
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('broker_email');
+        window.location.href = 'index.html';
+    });
+
+    async function loadForms() {
+        if (!CONFIG_APPS_SCRIPT_URL) {
+            document.getElementById('loadingMsg').innerText = "Configure a URL do Google Apps Script no config.js primeiro.";
+            return;
+        }
+
+        try {
+            const payload = {
+                action: 'getForms',
+                brokerEmail: brokerEmail,
+                adminUser: isAdmin ? sessionStorage.getItem('admin_user') : '',
+                adminPass: isAdmin ? sessionStorage.getItem('admin_pass') : ''
+            };
+
+            const data = await apiCall(payload);
+
+            const tbody = document.getElementById('formsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.forms.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhuma ficha criada ainda.</td></tr>';
+                return;
+            }
+
+            data.forms.forEach(form => {
+                const isSigned = form.status === 'Assinada';
+                let actionBtn = '';
+
+                if (isSigned) {
+                    actionBtn = `<a href="gerar_pdf.html?token=${form.token}" class="btn btn-sm btn-success" target="_blank">Ver PDF</a>`;
+                } else {
+                    const baseUrl = window.location.origin + window.location.pathname.replace('dashboard.html', '');
+                    const linkUrl = `${baseUrl}assinar.html?token=${form.token}`;
+                    const msg = encodeURIComponent(`Olá! Aqui está o link para revisar e assinar a ficha do seu imóvel: ${linkUrl}`);
+                    const waLink = `https://wa.me/55${form.phone}?text=${msg}`;
+
+                    actionBtn = `<a href="${waLink}" class="btn btn-sm btn-outline-primary" target="_blank">WhatsApp</a>`;
+                }
+
+                if (isAdmin) {
+                    actionBtn += ` <button class="btn btn-sm btn-danger ms-1" onclick="deleteForm('${form.token}')">Excluir</button>`;
+                }
+
+                const statusBadge = isSigned
+                    ? `<span class="badge bg-success">Assinada (${form.signedAt})</span>`
+                    : `<span class="badge bg-warning text-dark">Pendente</span>`;
+
+                const brokerDisplay = form.brokerEmail.split('@')[0];
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${form.createdAt}</td>
+                        <td>${brokerDisplay}</td>
+                        <td>${form.ownerName}</td>
+                        <td>${statusBadge}</td>
+                        <td>${actionBtn}</td>
+                    </tr>
+                `;
+            });
+
+        } catch (error) {
+            console.error(error);
+            document.getElementById('loadingMsg').innerText = "Erro ao carregar as fichas. Verifique a conexão.";
+        }
+    }
+
+    window.deleteForm = async function(token) {
+        if(!confirm("Tem certeza que deseja excluir esta ficha permanentemente?")) return;
+        const payload = {
+            action: 'deleteForm',
+            token: token,
+            adminUser: sessionStorage.getItem('admin_user'),
+            adminPass: sessionStorage.getItem('admin_pass')
+        };
+        await apiCall(payload);
+        loadForms();
+    }
+
+    loadForms();
+</script>
+</body>
+</html>

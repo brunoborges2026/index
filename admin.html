@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Vetorial Imóveis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+
+    <div id="loginSection" class="card mx-auto" style="max-width: 400px;">
+        <div class="card-body">
+            <h3 class="card-title text-center text-danger">Acesso Admin</h3>
+            <form id="adminLoginForm">
+                <div class="mb-3">
+                    <label>Usuário</label>
+                    <input type="text" id="adminUser" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Senha</label>
+                    <input type="password" id="adminPass" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-danger w-100">Entrar no Admin</button>
+            </form>
+            <div id="adminLoginMsg" class="text-danger mt-2 text-center" style="display:none;"></div>
+        </div>
+    </div>
+
+    <div id="adminPanel" style="display: none;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-danger">Painel de Administração</h2>
+            <div>
+                <a href="dashboard.html" class="btn btn-secondary">Ir para Dashboard</a>
+                <button id="logoutAdminBtn" class="btn btn-outline-danger">Sair Admin</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">Adicionar Corretor</div>
+                    <div class="card-body">
+                        <form id="addUserForm">
+                            <div class="input-group">
+                                <input type="email" id="newEmail" class="form-control" placeholder="E-mail do corretor" required>
+                                <button class="btn btn-primary" type="submit">Adicionar</button>
+                            </div>
+                            <small class="text-muted">A senha será definida pelo corretor no 1º acesso.</small>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-dark text-white">Gerenciar Corretores</div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>E-mail (Login)</th>
+                            <th>Status da Senha</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <tr><td colspan="3">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="config.js"></script>
+<script>
+    let aUser = sessionStorage.getItem('admin_user');
+    let aPass = sessionStorage.getItem('admin_pass');
+
+    if (aUser && aPass) {
+        showPanel();
+    }
+
+    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        aUser = document.getElementById('adminUser').value;
+        aPass = document.getElementById('adminPass').value;
+
+        document.getElementById('adminLoginMsg').innerText = "Verificando...";
+        document.getElementById('adminLoginMsg').style.display = 'block';
+
+        const payload = { action: 'getUsers', adminUser: aUser, adminPass: aPass };
+        try {
+            const data = await apiCall(payload);
+            if (data.success) {
+                sessionStorage.setItem('admin_user', aUser);
+                sessionStorage.setItem('admin_pass', aPass);
+                localStorage.setItem('broker_email', 'ADMIN'); // Allows access to dashboard
+                showPanel();
+            } else {
+                document.getElementById('adminLoginMsg').innerText = "Credenciais inválidas.";
+            }
+        } catch (e) {
+            document.getElementById('adminLoginMsg').innerText = "Erro de conexão.";
+        }
+    });
+
+    document.getElementById('logoutAdminBtn').addEventListener('click', () => {
+        sessionStorage.clear();
+        localStorage.removeItem('broker_email');
+        window.location.reload();
+    });
+
+    document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('newEmail').value;
+        const payload = { action: 'adminAddUser', adminUser: aUser, adminPass: aPass, newEmail: email };
+
+        try {
+            const data = await apiCall(payload);
+            if(data.success) {
+                document.getElementById('newEmail').value = '';
+                loadUsers();
+            } else {
+                alert(data.error);
+            }
+        } catch (e) { alert("Erro ao adicionar"); }
+    });
+
+    async function loadUsers() {
+        const payload = { action: 'getUsers', adminUser: aUser, adminPass: aPass };
+        const data = await apiCall(payload);
+        const tbody = document.getElementById('usersTable');
+        tbody.innerHTML = '';
+
+        data.users.forEach(u => {
+            const status = u.hasPassword ? '<span class="text-success">Cadastrada</span>' : '<span class="text-warning">Pendente (1º Acesso)</span>';
+            tbody.innerHTML += `
+                <tr>
+                    <td>${u.email}</td>
+                    <td>${status}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="resetUser('${u.email}')">Resetar Senha</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.email}')">Excluir</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    async function resetUser(email) {
+        if(!confirm(`Apagar a senha de ${email}? Ele poderá criar uma nova no próximo login.`)) return;
+        const payload = { action: 'adminResetUser', adminUser: aUser, adminPass: aPass, emailToReset: email };
+        await apiCall(payload);
+        loadUsers();
+    }
+
+    async function deleteUser(email) {
+        if(!confirm(`TEM CERTEZA que deseja excluir o acesso de ${email}?`)) return;
+        const payload = { action: 'adminDeleteUser', adminUser: aUser, adminPass: aPass, emailToDelete: email };
+        await apiCall(payload);
+        loadUsers();
+    }
+
+    function showPanel() {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadUsers();
+    }
+</script>
+</body>
+</html>
