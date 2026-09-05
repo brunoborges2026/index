@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Criar Nova Ficha de Imóvel - Vetorial Imóveis e Arquitetura</title>
+<!-- Tailwind CSS v3 com plugins de formulários e container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#ea580c',
+              600: '#c2410c',
+              accent: '#f97316'
+            },
+            slate: {
+              850: '#151f32'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          },
+          boxShadow: {
+            'card': '0 4px 20px -2px rgba(15, 23, 42, 0.06)',
+            'sticky-bar': '0 -4px 16px rgba(0, 0, 0, 0.05)'
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="base-styling">
+    /* Remove highlights no toque do iOS e garante scroll suave */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #f8fafc;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+  </style>
+<style data-purpose="form-controls">
+    /* Suporte a visual consistente em inputs de iOS */
+    input, select, textarea {
+      font-size: 14px !important;
+    }
+    input::placeholder {
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body class="text-slate-800 bg-slate-50 min-h-screen flex flex-col font-sans antialiased pb-24 selection:bg-brand-100 selection:text-brand-600">
+<!-- BEGIN: TopBar -->
+<header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-3.5 transition-all">
+<div class="max-w-md mx-auto flex items-center justify-between">
+<!-- Botão Voltar -->
+<button aria-label="Voltar para a página anterior" class="p-2 -ml-2 text-slate-600 hover:text-slate-900 active:bg-slate-100 rounded-full transition-colors" type="button">
+<svg class="w-5 h-5 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<line x1="19" x2="5" y1="12" y2="12"></line>
+<polyline points="12 19 5 12 12 5"></polyline>
+</svg>
+</button>
+<!-- Título Principal -->
+<div class="flex-1 text-center pr-2">
+<h1 class="text-base font-bold text-slate-900 tracking-tight leading-none">Criar Nova Ficha de Imóvel</h1>
+<span class="text-[11px] font-medium text-slate-400">Vetorial Imóveis e Arquitetura</span>
+</div>
+<!-- Ação de Ajuda ou Fechar -->
+<button aria-label="Informações de ajuda" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600 rounded-full" type="button">
+<svg class="w-5 h-5 stroke-[1.8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+<line x1="12" x2="12.01" y1="17" y2="17"></line>
+</svg>
+</button>
+</div>
+</header>
+<!-- END: TopBar -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 max-w-md w-full mx-auto px-4 pt-3.5 pb-6">
+<!-- BEGIN: Stepper -->
+<!-- Indicador de progresso com 3 passos -->
+<nav aria-label="Progresso do formulário" class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200/70 mb-4">
+<ol class="grid grid-cols-3 gap-2">
+<!-- Passo 1: Ativo -->
+<li class="relative flex flex-col items-center">
+<div class="w-full flex items-center mb-1.5">
+<span class="w-6 h-6 rounded-full bg-brand-500 text-white flex items-center justify-center text-xs font-semibold shadow-sm mx-auto z-10 ring-4 ring-brand-50">1</span>
+</div>
+<span class="text-[11.5px] font-bold text-brand-600 text-center leading-tight">Proprietário</span>
+</li>
+<!-- Passo 2: Pendente -->
+<li class="relative flex flex-col items-center">
+<div class="w-full flex items-center mb-1.5">
+<span class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 border border-slate-200 flex items-center justify-center text-xs font-medium mx-auto z-10">2</span>
+</div>
+<span class="text-[11.5px] font-medium text-slate-400 text-center leading-tight">Imóvel</span>
+</li>
+<!-- Passo 3: Pendente -->
+<li class="relative flex flex-col items-center">
+<div class="w-full flex items-center mb-1.5">
+<span class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 border border-slate-200 flex items-center justify-center text-xs font-medium mx-auto z-10">3</span>
+</div>
+<span class="text-[11.5px] font-medium text-slate-400 text-center leading-tight">Condições</span>
+</li>
+</ol>
+<!-- Barra de progresso linear fina -->
+<div class="w-full bg-slate-100 h-1.5 rounded-full mt-2.5 overflow-hidden">
+<div class="bg-brand-500 h-full w-1/3 rounded-full transition-all duration-300"></div>
+</div>
+</nav>
+<!-- END: Stepper -->
+<!-- BEGIN: FormCard -->
+<section class="bg-white rounded-2xl shadow-card border border-slate-200/80 p-4.5 sm:p-5">
+<!-- Cabeçalho do Card -->
+<div class="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
+<div>
+<h2 class="text-base font-bold text-slate-900 tracking-tight">Caracterização do Proprietário</h2>
+<p class="text-xs text-slate-500 mt-0.5">Preencha com os dados pessoais do titular</p>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-semibold tracking-wide uppercase border border-amber-200/60">Etapa 1</span>
+</div>
+<!-- Formulário de Dados -->
+<form autocomplete="off" class="space-y-3.5" id="form-proprietario" onsubmit="event.preventDefault();">
+<!-- Campo: Nome Completo -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="nome-completo">
+            Nome Completo <span class="text-red-500">*</span>
+</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 transition-all bg-slate-50/50 focus:bg-white" id="nome-completo" name="nomeCompleto" placeholder="Digite o nome completo" required="" type="text">
+</div>
+</div>
+<!-- Grupo: RG e CPF -->
+<div class="grid grid-cols-2 gap-3">
+<!-- RG -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="rg">RG</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 transition-all bg-slate-50/50 focus:bg-white" id="rg" name="rg" placeholder="00.000.000-0" type="text">
+</div>
+<!-- CPF -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="cpf">
+              CPF <span class="text-red-500">*</span>
+</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 transition-all bg-slate-50/50 focus:bg-white" id="cpf" name="cpf" placeholder="000.000.000-00" required="" type="text">
+</div>
+</div>
+<!-- Grupo: Data de Nascimento e Estado Civil -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Data de Nascimento -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="data-nascimento">Data de Nascimento</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 text-sm py-2.5 px-3 bg-slate-50/50 focus:bg-white" id="data-nascimento" name="dataNascimento" type="date">
+</div>
+</div>
+<!-- Estado Civil -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="estado-civil">Estado Civil</label>
+<div class="relative">
+<select class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 text-sm py-2.5 px-3 bg-slate-50/50 focus:bg-white appearance-none pr-8" id="estado-civil" name="estadoCivil">
+<option selected="" value="solteiro">Solteiro(a)</option>
+<option value="casado">Casado(a)</option>
+<option value="divorciado">Divorciado(a)</option>
+<option value="viuvo">Viúvo(a)</option>
+<option value="uniao_estavel">União Estável</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+<path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- Grupo: Nacionalidade e Profissão -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Nacionalidade -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="nacionalidade">Nacionalidade</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="nacionalidade" name="nacionalidade" type="text" value="Brasileiro(a)">
+</div>
+<!-- Profissão -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="profissao">Profissão</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="profissao" name="profissao" placeholder="Ex: Arquiteto" type="text">
+</div>
+</div>
+<!-- Divisor de Seção: Endereço -->
+<div class="pt-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Endereço Residencial</span>
+<div class="h-px bg-slate-100 w-full mt-1"></div>
+</div>
+<!-- Campo: Logradouro -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="logradouro">Logradouro (Rua/Av)</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="logradouro" name="logradouro" placeholder="Ex: Av. Paulista" type="text">
+</div>
+<!-- Grupo: Número e Complemento -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Número -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="numero">Número</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="numero" name="numero" placeholder="Ex: 1020" type="text">
+</div>
+<!-- Complemento -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="complemento">Complemento</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="complemento" name="complemento" placeholder="Apto 42, Bloco B" type="text">
+</div>
+</div>
+<!-- Grupo: Bairro e Cidade -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Bairro -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="bairro">Bairro</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="bairro" name="bairro" placeholder="Nome do bairro" type="text">
+</div>
+<!-- Cidade -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="cidade">Cidade</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="cidade" name="cidade" placeholder="Nome da cidade" type="text">
+</div>
+</div>
+<!-- Grupo: Estado (UF) e CEP -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Estado (UF) -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="uf">Estado (UF)</label>
+<div class="relative">
+<select class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 text-sm py-2.5 px-3 bg-slate-50/50 focus:bg-white appearance-none pr-8" id="uf" name="uf">
+<option disabled="" selected="" value="">UF</option>
+<option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+<option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+<option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+<option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+<option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+<option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+<option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+<option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+<option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+<path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- CEP -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="cep">CEP</label>
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 px-3.5 bg-slate-50/50 focus:bg-white" id="cep" name="cep" placeholder="00000-000" type="text">
+</div>
+</div>
+<!-- Divisor de Seção: Contato -->
+<div class="pt-2">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Contato &amp; Notificações</span>
+<div class="h-px bg-slate-100 w-full mt-1"></div>
+</div>
+<!-- Grupo: E-mail e Telefone (WhatsApp) -->
+<div class="space-y-3">
+<!-- E-mail -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="email">
+              E-mail <span class="text-red-500">*</span>
+</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 pl-3.5 pr-9 bg-slate-50/50 focus:bg-white" id="email" name="email" placeholder="proprietario@email.com" required="" type="email">
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
+<svg class="w-4 h-4 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Telefone (WhatsApp c/ DDD) -->
+<div class="space-y-1">
+<label class="block text-xs font-semibold text-slate-700" for="telefone">
+              Telefone (WhatsApp c/ DDD) <span class="text-red-500">*</span>
+</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-slate-900 placeholder:text-slate-400 text-sm py-2.5 pl-3.5 pr-9 bg-slate-50/50 focus:bg-white" id="telefone" name="telefone" placeholder="Ex: (12) 99999-9999" required="" type="tel">
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
+<svg class="w-4 h-4 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</form>
+</section>
+<!-- END: FormCard -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: StickyFooterActions -->
+<!-- Barra de Ações Fixa na base para facilitar ergonomia no iOS -->
+<footer class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-sticky-bar z-30 px-4 py-3">
+<div class="max-w-md mx-auto flex items-center justify-between gap-3">
+<!-- Botão Cancelar -->
+<button class="py-2.5 px-4 text-xs font-semibold text-slate-500 hover:text-slate-700 active:text-slate-900 rounded-xl transition-colors" type="button">
+        Cancelar
+      </button>
+<!-- Botão Próximo -->
+<button class="flex-1 inline-flex items-center justify-center gap-2 bg-brand-500 active:bg-brand-600 text-white font-semibold text-sm py-2.5 px-5 rounded-xl shadow-md shadow-brand-500/25 transition-all" form="form-proprietario" type="submit">
+<span>Próximo: Imóvel</span>
+<svg class="w-4 h-4 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</footer>
+<!-- END: StickyFooterActions -->
+</body></html>

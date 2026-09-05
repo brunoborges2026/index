@@ -1,0 +1,553 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Criar Nova Ficha de Imóvel - Vetorial Imóveis e Arquitetura</title>
+<!-- Tailwind CSS CDN com Plugins de Formulário e Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+            },
+            vetorial: {
+              navy: '#0f172a',
+              slate: '#334155',
+              light: '#f8fafc',
+            }
+          },
+          boxShadow: {
+            'subtle': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+            'card': '0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.03)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="custom-form-elements">
+    /* Custom chip styling for planned furniture checkboxes */
+    .chip-checkbox:checked + label {
+      background-color: #ffedd5;
+      border-color: #ea580c;
+      color: #9a3412;
+      font-weight: 600;
+    }
+    /* Smooth transition for inputs */
+    input, select, textarea {
+      transition: all 0.2s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-28 antialiased selection:bg-orange-500 selection:text-white">
+<!-- BEGIN: MobileHeader -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 shadow-xs">
+<div class="max-w-md mx-auto flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+          V
+        </div>
+<div>
+<span class="text-xs uppercase tracking-wider font-bold text-orange-600 block leading-none">Vetorial</span>
+<span class="text-[11px] text-slate-500 font-medium">Imóveis e Arquitetura</span>
+</div>
+</div>
+<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">ID: #NOVO</span>
+</div>
+</header>
+<!-- END: MobileHeader -->
+<!-- BEGIN: StepperSection -->
+<section class="bg-white border-b border-slate-200 py-3.5 px-4 shadow-xs" data-purpose="progress-stepper">
+<div class="max-w-md mx-auto">
+<div class="flex items-center justify-between relative">
+<!-- Connecting Line Background -->
+<div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-0.5 bg-slate-200 z-0"></div>
+<!-- Active Progress Line -->
+<div class="absolute left-6 w-1/2 top-1/2 -translate-y-1/2 h-0.5 bg-orange-500 z-0"></div>
+<!-- Step 1: Concluído -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-sm ring-4 ring-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</div>
+<span class="text-[11px] font-medium text-slate-500 mt-1.5">1. Proprietário</span>
+</div>
+<!-- Step 2: Ativo -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-7 h-7 rounded-full bg-orange-600 text-white flex items-center justify-center text-xs font-bold ring-4 ring-orange-100 shadow-sm">
+            2
+          </div>
+<span class="text-[11px] font-bold text-orange-600 mt-1.5">2. Imóvel</span>
+</div>
+<!-- Step 3: Pendente -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-7 h-7 rounded-full bg-slate-100 border border-slate-300 text-slate-400 flex items-center justify-center text-xs font-medium ring-4 ring-white">
+            3
+          </div>
+<span class="text-[11px] font-medium text-slate-400 mt-1.5">3. Condições</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: StepperSection -->
+<!-- BEGIN: MainContent -->
+<main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+<!-- Top Section Title -->
+<div class="flex items-center justify-between pb-1">
+<div>
+<h1 class="text-xl font-bold text-slate-900 tracking-tight">Descrição do Imóvel</h1>
+<p class="text-xs text-slate-500">Preencha as características detalhadas do imóvel</p>
+</div>
+<div class="flex space-x-1">
+<button aria-label="Passo anterior" class="p-1.5 text-slate-400 hover:text-slate-600 rounded bg-slate-100" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button aria-label="Próximo passo" class="p-1.5 text-slate-400 hover:text-slate-600 rounded bg-slate-100" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<!-- FORM START -->
+<form action="#" class="space-y-4" method="POST" onsubmit="event.preventDefault();">
+<!-- BEGIN: CardLocalizacao -->
+<section class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card space-y-3.5" data-purpose="address-card">
+<div class="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+<div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-sm font-bold text-slate-900">Endereço e Localização</h2>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="logradouro">Logradouro do Imóvel (Rua/Av)</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="logradouro" placeholder="Ex: Av. Beira Mar Norte" type="text">
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="numero">Número</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="numero" placeholder="Ex: 120" type="text">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="complemento">Complemento</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="complemento" placeholder="Apt 402, Bloco B" type="text">
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="bairro">Bairro</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="bairro" placeholder="Centro" type="text">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="cidade">Cidade</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="cidade" placeholder="Florianópolis" type="text">
+</div>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<div class="col-span-1">
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="uf">Estado (UF)</label>
+<select class="w-full rounded-xl border-slate-300 text-sm font-medium focus:border-orange-500 focus:ring-orange-500 py-2" id="uf">
+<option disabled="" selected="" value="">UF</option>
+<option value="SC">SC</option>
+<option value="PR">PR</option>
+<option value="RS">RS</option>
+<option value="SP">SP</option>
+<option value="RJ">RJ</option>
+<option value="MG">MG</option>
+</select>
+</div>
+<div class="col-span-2">
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="cep">CEP</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="cep" inputmode="numeric" placeholder="88000-000" type="text">
+</div>
+</div>
+</section>
+<!-- END: CardLocalizacao -->
+<!-- BEGIN: CardDadosCadastrais -->
+<section class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card space-y-3.5" data-purpose="registration-card">
+<div class="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+<div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-sm font-bold text-slate-900">Classificação e Registro</h2>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="tipo_imovel">Tipo de Imóvel</label>
+<select class="w-full rounded-xl border-slate-300 text-sm font-medium focus:border-orange-500 focus:ring-orange-500" id="tipo_imovel">
+<option selected="" value="Casa">Casa</option>
+<option value="Apartamento">Apartamento</option>
+<option value="Terreno">Terreno</option>
+<option value="Cobertura">Cobertura</option>
+<option value="Comercial">Comercial</option>
+<option value="Outro">Outro</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="estado_imovel">Estado do Imóvel</label>
+<select class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500" id="estado_imovel">
+<option selected="" value="Novo">Novo</option>
+<option value="Usado">Usado</option>
+<option value="Em construção">Em construção</option>
+<option value="Na planta">Na planta</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="previsao_entrega">Previsão de Entrega</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="previsao_entrega" placeholder="Mês/Ano ou Imediato" type="text">
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="matricula">Nº da Matrícula</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="matricula" placeholder="12345" type="text">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="iptu_num">Número do IPTU</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="iptu_num" placeholder="00.000.000" type="text">
+</div>
+</div>
+</section>
+<!-- END: CardDadosCadastrais -->
+<!-- BEGIN: CardComodos -->
+<section class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card space-y-3.5" data-purpose="rooms-distribution-card">
+<div class="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+<div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-sm font-bold text-slate-900">Distribuição dos Cômodos</h2>
+</div>
+<!-- Cômodos em grid numérico -->
+<div class="grid grid-cols-3 gap-2.5">
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="dormitorios">Dormitórios</label>
+<input class="w-full rounded-xl border-slate-300 text-sm text-center focus:border-orange-500 focus:ring-orange-500" id="dormitorios" min="0" placeholder="0" type="number">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="suites">Suítes</label>
+<input class="w-full rounded-xl border-slate-300 text-sm text-center focus:border-orange-500 focus:ring-orange-500" id="suites" min="0" placeholder="0" type="number">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="banheiros_sociais">Banheiros</label>
+<input class="w-full rounded-xl border-slate-300 text-sm text-center focus:border-orange-500 focus:ring-orange-500" id="banheiros_sociais" min="0" placeholder="0" type="number">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="lavabos">Lavabos</label>
+<input class="w-full rounded-xl border-slate-300 text-sm text-center focus:border-orange-500 focus:ring-orange-500" id="lavabos" min="0" placeholder="0" type="number">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="sala_estar">Sala de Estar</label>
+<input class="w-full rounded-xl border-slate-300 text-sm text-center focus:border-orange-500 focus:ring-orange-500" id="sala_estar" min="0" placeholder="0" type="number">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="sala_jantar">Sala de Jantar</label>
+<input class="w-full rounded-xl border-slate-300 text-sm text-center focus:border-orange-500 focus:ring-orange-500" id="sala_jantar" min="0" placeholder="0" type="number">
+</div>
+</div>
+<hr class="border-slate-100 my-2">
+<!-- Salas integradas -->
+<div>
+<span class="block text-xs font-semibold text-slate-700 mb-2">Salas Integradas?</span>
+<div class="grid grid-cols-3 gap-2">
+<label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 active:bg-orange-50 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
+<input class="sr-only" name="salas_integradas" type="radio" value="sim">
+              Sim
+            </label>
+<label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 active:bg-orange-50 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
+<input class="sr-only" name="salas_integradas" type="radio" value="nao">
+              Não
+            </label>
+<label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 active:bg-orange-50 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
+<input class="sr-only" name="salas_integradas" type="radio" value="separadas">
+              Separadas
+            </label>
+</div>
+</div>
+<!-- Cozinha Opções e Observação -->
+<div class="space-y-2">
+<span class="block text-xs font-semibold text-slate-700">Cozinha</span>
+<div class="grid grid-cols-3 gap-2">
+<label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
+<input class="sr-only" name="cozinha" type="radio" value="individual">
+              Individual
+            </label>
+<label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
+<input class="sr-only" name="cozinha" type="radio" value="integrada">
+              Integrada
+            </label>
+<label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-700 cursor-pointer hover:bg-slate-50 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
+<input class="sr-only" name="cozinha" type="radio" value="americana">
+              Americana
+            </label>
+</div>
+<input class="w-full mt-2 rounded-xl border-slate-300 text-xs focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" placeholder="Observação da cozinha..." type="text">
+</div>
+<!-- Área de serviço e Depósito -->
+<div class="grid grid-cols-2 gap-3 pt-1">
+<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+<span class="block text-[11px] font-semibold text-slate-600 mb-1.5">Área de Serviço</span>
+<div class="flex items-center space-x-3 text-xs font-medium">
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="area_servico" type="radio" value="sim">
+<span class="ml-1 text-slate-700">Sim</span>
+</label>
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="area_servico" type="radio" value="nao">
+<span class="ml-1 text-slate-700">Não</span>
+</label>
+</div>
+</div>
+<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+<span class="block text-[11px] font-semibold text-slate-600 mb-1.5">Depósito / Hobby Box</span>
+<div class="flex items-center space-x-3 text-xs font-medium">
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="deposito" type="radio" value="sim">
+<span class="ml-1 text-slate-700">Sim</span>
+</label>
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="deposito" type="radio" value="nao">
+<span class="ml-1 text-slate-700">Não</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Móveis Planejados -->
+<div class="pt-2">
+<label class="block text-xs font-semibold text-slate-700 mb-2">Móveis planejados em:</label>
+<div class="flex flex-wrap gap-1.5">
+<div>
+<input class="sr-only chip-checkbox" id="mov_dorm" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_dorm">Dormitórios</label>
+</div>
+<div>
+<input class="sr-only chip-checkbox" id="mov_banh" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_banh">Banheiros</label>
+</div>
+<div>
+<input class="sr-only chip-checkbox" id="mov_sala" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_sala">Sala de estar</label>
+</div>
+<div>
+<input class="sr-only chip-checkbox" id="mov_coz" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_coz">Cozinha</label>
+</div>
+<div>
+<input class="sr-only chip-checkbox" id="mov_serv" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_serv">Área de serviço</label>
+</div>
+<div>
+<input class="sr-only chip-checkbox" id="mov_gourmet" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_gourmet">Área gourmet</label>
+</div>
+<div>
+<input class="sr-only chip-checkbox" id="mov_escr" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_escr">Escritório</label>
+</div>
+<div>
+<input class="sr-only chip-checkbox" id="mov_hall" type="checkbox">
+<label class="inline-block px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-medium text-slate-600 cursor-pointer" for="mov_hall">Hall de entrada</label>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CardComodos -->
+<!-- BEGIN: CardMetragens -->
+<section class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card space-y-3.5" data-purpose="measurements-card">
+<div class="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+<div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-sm font-bold text-slate-900">Metragens &amp; Áreas</h2>
+</div>
+<div class="grid grid-cols-3 gap-2.5">
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="area_terreno">Área Terreno</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-300 text-sm pr-6 focus:border-orange-500 focus:ring-orange-500" id="area_terreno" placeholder="0" type="text">
+<span class="absolute right-2 top-2.5 text-[10px] text-slate-400 font-semibold">m²</span>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="area_construida">Área Constr.</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-300 text-sm pr-6 focus:border-orange-500 focus:ring-orange-500" id="area_construida" placeholder="0" type="text">
+<span class="absolute right-2 top-2.5 text-[10px] text-slate-400 font-semibold">m²</span>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-600 mb-1 truncate" for="area_util">Área Útil</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-300 text-sm pr-6 focus:border-orange-500 focus:ring-orange-500" id="area_util" placeholder="0" type="text">
+<span class="absolute right-2 top-2.5 text-[10px] text-slate-400 font-semibold">m²</span>
+</div>
+</div>
+</div>
+<!-- Dimensões do terreno -->
+<span class="block text-xs font-semibold text-slate-700 pt-1">Dimensões do Terreno:</span>
+<div class="grid grid-cols-2 gap-2.5">
+<div>
+<label class="block text-[11px] font-medium text-slate-500 mb-1" for="frente">Frente (testada)</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-300 text-sm pr-6 focus:border-orange-500 focus:ring-orange-500" id="frente" placeholder="0,00" type="text">
+<span class="absolute right-2.5 top-2.5 text-[10px] text-slate-400 font-semibold">m</span>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-medium text-slate-500 mb-1" for="fundos">Fundos</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-300 text-sm pr-6 focus:border-orange-500 focus:ring-orange-500" id="fundos" placeholder="0,00" type="text">
+<span class="absolute right-2.5 top-2.5 text-[10px] text-slate-400 font-semibold">m</span>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-medium text-slate-500 mb-1" for="lado_direito">Lado Direito</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-300 text-sm pr-6 focus:border-orange-500 focus:ring-orange-500" id="lado_direito" placeholder="0,00" type="text">
+<span class="absolute right-2.5 top-2.5 text-[10px] text-slate-400 font-semibold">m</span>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-medium text-slate-500 mb-1" for="lado_esquerdo">Lado Esquerdo</label>
+<div class="relative">
+<input class="w-full rounded-xl border-slate-300 text-sm pr-6 focus:border-orange-500 focus:ring-orange-500" id="lado_esquerdo" placeholder="0,00" type="text">
+<span class="absolute right-2.5 top-2.5 text-[10px] text-slate-400 font-semibold">m</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CardMetragens -->
+<!-- BEGIN: CardChavesECustos -->
+<section class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card space-y-3.5" data-purpose="keys-costs-card">
+<div class="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+<div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-sm font-bold text-slate-900">Chaves e Encargos</h2>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="local_chaves">Local das Chaves</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="local_chaves" placeholder="Ex: Portaria / Imobiliária" type="text">
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="nome_contato_chaves">Contato das Chaves</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="nome_contato_chaves" placeholder="Nome" type="text">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="tel_contato_chaves">Telefone Chaves</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" id="tel_contato_chaves" placeholder="(00) 00000-0000" type="tel">
+</div>
+</div>
+<hr class="border-slate-100 my-2">
+<!-- Custos Condomínio e IPTU -->
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="valor_condominio">Condomínio (R$)</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500" id="valor_condominio" inputmode="decimal" placeholder="R$ 0,00" type="text">
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-700 mb-1" for="valor_iptu">IPTU (R$)</label>
+<input class="w-full rounded-xl border-slate-300 text-sm focus:border-orange-500 focus:ring-orange-500" id="valor_iptu" inputmode="decimal" placeholder="R$ 0,00" type="text">
+<div class="flex items-center justify-end space-x-3 mt-1.5">
+<label class="inline-flex items-center text-[11px] text-slate-600">
+<input class="text-orange-600 focus:ring-orange-500 h-3 w-3 border-slate-300" name="periodo_iptu" type="radio" value="mensal">
+<span class="ml-1">Mensal</span>
+</label>
+<label class="inline-flex items-center text-[11px] text-slate-600">
+<input class="text-orange-600 focus:ring-orange-500 h-3 w-3 border-slate-300" name="periodo_iptu" type="radio" value="anual">
+<span class="ml-1">Anual</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CardChavesECustos -->
+<!-- BEGIN: CardCartorio -->
+<section class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card space-y-3.5" data-purpose="legal-documentation-card">
+<div class="flex items-center space-x-2 border-b border-slate-100 pb-2.5">
+<div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h2 class="text-sm font-bold text-slate-900">Informações Cartorárias</h2>
+</div>
+<div class="space-y-3">
+<!-- Documentação OK -->
+<div class="flex items-center justify-between py-1">
+<span class="text-xs font-semibold text-slate-700 leading-tight pr-2">Documentação "OK" e aceita financiamento?</span>
+<div class="flex items-center space-x-2.5 text-xs font-medium shrink-0">
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="doc_ok" type="radio" value="sim">
+<span class="ml-1 text-slate-700">Sim</span>
+</label>
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="doc_ok" type="radio" value="nao">
+<span class="ml-1 text-slate-700">Não</span>
+</label>
+</div>
+</div>
+<!-- AVERBADO na matrícula -->
+<div class="flex items-center justify-between py-1 border-t border-slate-100 pt-2.5">
+<span class="text-xs font-semibold text-slate-700 leading-tight pr-2">AVERBADO na matrícula?</span>
+<div class="flex items-center space-x-2.5 text-xs font-medium shrink-0">
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="averbado" type="radio" value="sim">
+<span class="ml-1 text-slate-700">Sim</span>
+</label>
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="averbado" type="radio" value="nao">
+<span class="ml-1 text-slate-700">Não</span>
+</label>
+</div>
+</div>
+<!-- Em nome de um terceiro? -->
+<div class="border-t border-slate-100 pt-2.5">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold text-slate-700 leading-tight">Em nome de um terceiro?</span>
+<div class="flex items-center space-x-2.5 text-xs font-medium">
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="em_nome_terceiro" type="radio" value="sim">
+<span class="ml-1 text-slate-700">Sim</span>
+</label>
+<label class="inline-flex items-center">
+<input class="text-orange-600 focus:ring-orange-500 border-slate-300" name="em_nome_terceiro" type="radio" value="nao">
+<span class="ml-1 text-slate-700">Não</span>
+</label>
+</div>
+</div>
+<input class="w-full rounded-xl border-slate-300 text-xs focus:border-orange-500 focus:ring-orange-500 placeholder:text-slate-400" placeholder="Nome do terceiro titular..." type="text">
+</div>
+</div>
+</section>
+<!-- END: CardCartorio -->
+</form>
+<!-- FORM END -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: StickyFooterActions -->
+<footer class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur border-t border-slate-200 px-4 py-3 z-50 shadow-lg">
+<div class="max-w-md mx-auto flex items-center space-x-3">
+<button class="w-1/3 py-3 px-4 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 active:scale-95 transition-all text-center" type="button">
+        Anterior
+      </button>
+<button class="w-2/3 py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold text-sm shadow-md shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center space-x-1.5" type="button">
+<span>Próximo: Condições</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</footer>
+<!-- END: StickyFooterActions -->
+</body></html>

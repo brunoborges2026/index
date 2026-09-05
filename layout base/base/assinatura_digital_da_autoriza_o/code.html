@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Autorização de Comercialização de Imóvel - Vetorial Imóveis</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#19283c',
+              orange: '#e05915',
+              darkorange: '#c84708',
+              green: '#10a352',
+              greenhover: '#0c8742',
+              graybg: '#f4f6f8',
+              border: '#e2e8f0',
+              textmuted: '#5f6c7b'
+            }
+          },
+          boxShadow: {
+            'card': '0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 1px 4px -1px rgba(0, 0, 0, 0.03)',
+            'paper': '0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.03)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="custom-styling">
+    /* Previne scroll excessivo ao assinar em touchscreens */
+    #signature-pad {
+      touch-action: none;
+      cursor: crosshair;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-[#eef2f6] text-slate-800 antialiased font-sans pb-12 pt-2 selection:bg-orange-100 selection:text-orange-900">
+<!-- BEGIN: Mobile App Container Wrapper -->
+<main class="max-w-xl mx-auto px-2.5 sm:px-4" data-purpose="mobile-document-container">
+<!-- Top Security & Trust Header -->
+<div class="flex items-center justify-between py-2 px-1 text-xs text-slate-500 mb-1" data-purpose="trust-status-bar">
+<div class="flex items-center gap-1.5 font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/80 shadow-sm">
+<svg class="w-3.5 h-3.5 text-emerald-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+<span>Assinatura Digital Válida (Lei nº 14.063)</span>
+</div>
+<span class="text-[11px] text-slate-400 font-mono">ID: #DOC-8941V</span>
+</div>
+<!-- Main Contract Card (A4 Paper Aesthetic) -->
+<article class="bg-white rounded-xl shadow-paper border border-slate-200/90 overflow-hidden" data-purpose="contract-document">
+<!-- BEGIN: Document Header -->
+<header class="p-4 sm:p-6 border-b border-slate-100 bg-gradient-to-b from-slate-50/50 to-white" data-purpose="agency-header">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+<div>
+<h1 class="text-xl sm:text-2xl font-black tracking-tight text-[#1b263b] flex items-center gap-1">
+              VETORIAL
+            </h1>
+<p class="text-[11px] uppercase tracking-wider font-semibold text-brand-orange mt-[-2px]">
+              IMÓVEIS E ARQUITETURA
+            </p>
+</div>
+<div class="text-xs text-slate-500 sm:text-right space-y-0.5 leading-tight">
+<p class="font-bold text-slate-700 flex sm:justify-end items-center gap-1">
+<svg class="w-3 h-3 text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 4V3z"></path></svg>
+              (12) 3882-5888
+            </p>
+<p class="text-[11px] text-brand-orange hover:underline font-medium">www.vetorialimoveisearquitetura.com</p>
+<p class="text-[10px] text-slate-400 leading-tight">Av. Ver. Aristides Anizio dos Santos, 40, Indaiá, Caraguatatuba-SP</p>
+<p class="text-[10px] text-slate-400 font-medium">CRECI sob nº 30038-J</p>
+</div>
+</div>
+<div class="mt-4 pt-1">
+<div class="w-full bg-[#1b263b] py-2.5 px-3 rounded-lg shadow-sm text-center">
+<h2 class="text-white text-xs sm:text-sm font-extrabold uppercase tracking-wide">
+              AUTORIZAÇÃO DE COMERCIALIZAÇÃO DE IMÓVEL
+            </h2>
+</div>
+</div>
+</header>
+<!-- END: Document Header -->
+<!-- BEGIN: Contract Body -->
+<div class="p-4 sm:p-6 space-y-5 text-[12px] leading-relaxed text-slate-700" data-purpose="contract-body">
+<!-- Preamble text -->
+<p class="text-justify text-slate-700 leading-normal">
+          Eu, <strong class="text-slate-900 font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">fgfgf</strong>, proprietário do imóvel abaixo descrito, portador do RG nº: <strong class="text-slate-900 font-bold">fghgfh</strong> e CPF nº: <strong class="text-slate-900 font-bold">ghgfh</strong>, autorizo a <strong class="text-slate-900">“VETORIAL IMÓVEIS E ARQUITETURA”</strong>, inscrita no CRECI sob nº 30038-J, com sede na Avenida Vereador Aristides Anízio dos Santos, 40 - Indaiá, a intermediar a <strong class="text-brand-orange">VENDA</strong> ou <strong class="text-brand-orange">LOCAÇÃO</strong> do imóvel abaixo relacionado:
+        </p>
+<!-- Owner Details Box -->
+<div class="bg-slate-50/70 border border-slate-200 rounded-lg p-3 text-[11px] space-y-1.5 shadow-sm" data-purpose="owner-data-card">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-1 gap-x-2">
+<div><span class="font-bold text-slate-800">Logradouro:</span> gfh, <span class="font-bold text-slate-800">Nº:</span> hhh, <span class="font-bold text-slate-800">Comp:</span> hhh</div>
+<div><span class="font-bold text-slate-800">Bairro:</span> hhh | <span class="font-bold text-slate-800">Cidade:</span> hhh | <span class="font-bold text-slate-800">Estado:</span> PA</div>
+<div><span class="font-bold text-slate-800">CEP:</span> hhh</div>
+<div><span class="font-bold text-slate-800">Data de Nascimento:</span> 1995-01-09</div>
+<div><span class="font-bold text-slate-800">Estado Civil:</span> Solteiro(a)</div>
+<div><span class="font-bold text-slate-800">Nacionalidade:</span> Brasileiro(a)ghg</div>
+<div><span class="font-bold text-slate-800">Profissão:</span> gjghj</div>
+<div class="sm:col-span-2 border-t border-slate-200/80 pt-1 mt-0.5">
+<span class="font-bold text-slate-800">E-mail:</span> bruno@gmail.com | <span class="font-bold text-slate-800">Telefone:</span> 12996052247
+            </div>
+</div>
+</div>
+<!-- Section: Property Description -->
+<div class="space-y-1.5" data-purpose="property-description-section">
+<h3 class="text-brand-orange font-bold text-sm tracking-tight flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-orange rounded-full inline-block"></span>
+            Descrição do Imóvel
+          </h3>
+<div class="border border-slate-200 rounded-lg p-3 bg-white text-[11px] space-y-2 shadow-sm">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 divide-y sm:divide-y-0 divide-slate-100">
+<div class="space-y-1">
+<p><strong class="text-slate-800">Estado:</strong> Novo | <strong class="text-slate-800">Entrega:</strong> ff</p>
+<p><strong class="text-slate-800">Tipo:</strong> Casa</p>
+<p><strong class="text-slate-800">Dormitórios:</strong> 1 | <strong class="text-slate-800">Suítes:</strong> -</p>
+<p><strong class="text-slate-800">Salas (Estar/Jantar):</strong> / 1 - Integradas? Sim</p>
+<p><strong class="text-slate-800">Cozinha:</strong> Integrada</p>
+<p><strong class="text-slate-800">Móveis planejados:</strong> Banheiros</p>
+<p><strong class="text-slate-800">Área Terreno:</strong> 11m² | <strong class="text-slate-800">Construída:</strong> 11m² | <strong class="text-slate-800">Útil:</strong> 11m²</p>
+<p><strong class="text-slate-800">Local Chaves:</strong> 11 - Nome: 11 - Tel: 11</p>
+<p><strong class="text-slate-800">Valor Condomínio:</strong> R$</p>
+<p><strong class="text-slate-800">Doc OK / Financiamento?:</strong> Sim</p>
+<p><strong class="text-slate-800">Terceiro?:</strong> Não - Nome:</p>
+</div>
+<div class="space-y-1 pt-1 sm:pt-0 sm:border-l sm:border-slate-100 sm:pl-4">
+<p><strong class="text-slate-800">Matrícula:</strong> fff | <strong class="text-slate-800">IPTU nº:</strong> fff</p>
+<p><strong class="text-slate-800">Banheiros:</strong> 1 | <strong class="text-slate-800">Lavabos:</strong> 1</p>
+<p><strong class="text-slate-800">Vagas estacionamento:</strong> | <strong class="text-slate-800">Coberta:</strong> | <strong class="text-slate-800">Tipo:</strong></p>
+<p><strong class="text-slate-800">Área serviço:</strong> Sim | <strong class="text-slate-800">Depósito:</strong> -</p>
+<p class="pt-1.5"><strong class="text-slate-800">Frente:</strong> m² | <strong class="text-slate-800">Dir:</strong> m² | <strong class="text-slate-800">Esq:</strong> m² | <strong class="text-slate-800">Fun:</strong> m²</p>
+<p class="pt-3"><strong class="text-slate-800">Valor IPTU:</strong> R$ ()</p>
+<p><strong class="text-slate-800">Averbado?:</strong> Sim</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Price and Conditions -->
+<div class="space-y-1.5" data-purpose="terms-and-pricing-section">
+<h3 class="text-brand-orange font-bold text-sm tracking-tight flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-orange rounded-full inline-block"></span>
+            Valor e condições de pagamento
+          </h3>
+<div class="border border-slate-200 rounded-lg p-3 bg-white text-[11px] space-y-2 shadow-sm leading-relaxed">
+<!-- Check selections visual identical to reference -->
+<div class="bg-amber-50/50 p-2 rounded border border-amber-100/80 space-y-1">
+<div class="flex flex-wrap items-center gap-x-4">
+<span class="font-bold text-slate-900 flex items-center gap-1">
+<span class="text-emerald-700 font-extrabold">[X]</span> Autorizado para venda por R$ 500000
+                </span>
+<span class="text-slate-500">( ) Não autorizado</span>
+</div>
+<div class="flex flex-wrap items-center gap-x-4">
+<span class="text-slate-500">( ) Autorizado para locação por R$</span>
+<span class="font-bold text-slate-900 flex items-center gap-1">
+<span class="text-slate-700 font-extrabold">[X]</span> Não autorizado
+                </span>
+</div>
+</div>
+<!-- Parameters line -->
+<div class="pt-1 text-slate-800 font-medium">
+<span class="font-bold">Admin Vetorial:</span> Sim | <span class="font-bold">Placas:</span> Sim | <span class="font-bold">Exclusividade:</span> Sim<br>
+<span class="font-bold">Permuta:</span> Sim, na praia
+            </div>
+<!-- Commission fees -->
+<div class="pt-1 border-t border-slate-100 text-slate-700">
+<p><strong class="text-slate-900">Venda:</strong> 6% do valor da venda (conforme tabela do CRECI)</p>
+<p><strong class="text-slate-900">Obs:</strong></p>
+<p class="mt-0.5"><strong class="text-slate-900">Locação:</strong> Primeiro Aluguel + Taxa de administração de 10% dos alugueis subsequentes (quando houver a administração da Vetorial Imóveis e Arquitetura).</p>
+</div>
+</div>
+</div>
+<!-- BEGIN: Interactive Signing Section -->
+<section class="mt-6 border-2 border-slate-200 bg-slate-50/60 rounded-xl p-3 sm:p-4 space-y-4" data-purpose="interactive-signing-workflow">
+<!-- Step 1: Selfie Validation -->
+<div class="space-y-2">
+<h4 class="font-bold text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
+<span class="text-base">📸</span>
+<span>1. Selfie segurando documento com foto (RG/CNH)</span>
+</h4>
+<p class="text-[11px] text-slate-500 leading-snug">
+              Para validade jurídica da assinatura, é necessário anexar uma foto do seu rosto segurando o documento ao lado.
+            </p>
+<!-- Action Buttons Container -->
+<div class="flex flex-col sm:flex-row gap-2 pt-1">
+<button class="inline-flex items-center justify-center gap-2 bg-[#1b263b] hover:bg-[#253550] active:scale-[0.98] text-white px-4 py-2.5 rounded-lg text-xs font-bold transition shadow-sm" data-purpose="take-selfie-button" onclick="document.getElementById('file-upload').click()" type="button">
+<svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+                Abrir Câmera e Tirar Selfie
+              </button>
+</div>
+<!-- Alternative Native File Picker -->
+<div class="text-[11px] text-slate-500 pt-1">
+<span class="block mb-1">Ou envie do arquivo/câmera do celular:</span>
+<div class="flex items-center gap-2">
+<label class="cursor-pointer bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded text-[11px] font-medium transition shadow-2xs" for="file-upload">
+                  Escolher arquivo
+                </label>
+<input accept="image/*" capture="user" class="hidden" id="file-upload" onchange="handleFileSelected(event)" type="file">
+<span class="text-[11px] text-slate-400 truncate max-w-[200px]" id="file-chosen-text">Nenhum arquivo escolhido</span>
+</div>
+</div>
+</div>
+<!-- Mandatory Legal Agreement Checkbox -->
+<div class="pt-2 border-t border-slate-200">
+<label class="flex items-start gap-2.5 cursor-pointer select-none">
+<input class="mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 h-4 w-4 transition cursor-pointer" id="legal-agreement" type="checkbox">
+<span class="text-[11.5px] font-medium text-slate-800 leading-snug">
+                Li e concordo com os termos acima e confirmo a veracidade das informações e documentos apresentados.
+              </span>
+</label>
+</div>
+<!-- Step 2: Signature Canvas Pad -->
+<div class="space-y-1.5 pt-1">
+<div class="flex items-center justify-between">
+<h4 class="font-bold text-xs sm:text-sm text-slate-800 flex items-center gap-1.5">
+<span class="text-base">✍️</span>
+<span>2. Assinatura do Proprietário (Touch ou Mouse):</span>
+</h4>
+</div>
+<div class="relative bg-white border border-slate-300 rounded-lg overflow-hidden shadow-inner">
+<canvas class="w-full h-36 sm:h-44 block bg-white" height="180" id="signature-pad" width="500"></canvas>
+<!-- Subtle Signature Baseline Indicator -->
+<div class="absolute bottom-6 left-6 right-6 border-b border-dashed border-slate-200 pointer-events-none flex justify-end">
+<span class="text-[9px] text-slate-300 select-none pb-0.5 pr-1">assine sobre a linha</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-0.5">
+<button class="text-red-600 hover:text-red-700 text-xs font-semibold underline underline-offset-2 transition active:opacity-75" id="clear-btn" type="button">
+                Refazer Assinatura
+              </button>
+<span class="text-[10px] text-slate-400 italic">Área sensível a toque</span>
+</div>
+</div>
+<!-- Final Submit Button -->
+<div class="pt-2">
+<button class="w-full bg-[#10a352] hover:bg-[#0c8742] active:scale-[0.99] text-white font-bold text-sm sm:text-base py-3 px-4 rounded-lg shadow-md transition-all flex items-center justify-center gap-2" data-purpose="submit-button" id="submit-document-btn" type="button">
+<svg class="w-5 h-5 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+<span>Assinar e Enviar Documento</span>
+</button>
+</div>
+<!-- Forensic Footer Timestamp -->
+<div class="text-center pt-1" data-purpose="audit-footer">
+<p class="text-[10px] text-slate-500 flex items-center justify-center gap-1">
+<svg class="w-3 h-3 text-slate-400 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+              Data, Hora, IP e Localização GPS já capturados de forma segura.
+            </p>
+</div>
+</section>
+<!-- END: Interactive Signing Section -->
+</div>
+<!-- END: Contract Body -->
+</article>
+<!-- END: Main Contract Card -->
+<!-- Mobile Navigation Security Note -->
+<div class="text-center mt-3 text-[11px] text-slate-400">
+      Vetorial Imóveis e Arquitetura © 2024 • Todos os direitos reservados
+    </div>
+</main>
+<!-- END: Mobile App Container Wrapper -->
+<!-- BEGIN: Signature Canvas & Interaction Logic -->
+<script data-purpose="signature-and-upload-handlers">
+    // References to DOM elements
+    const canvas = document.getElementById('signature-pad');
+    const ctx = canvas.getContext('2d');
+    const clearBtn = document.getElementById('clear-btn');
+    const submitBtn = document.getElementById('submit-document-btn');
+    const agreementCheckbox = document.getElementById('legal-agreement');
+    const fileChosenText = document.getElementById('file-chosen-text');
+
+    let isDrawing = false;
+    let hasSignature = false;
+
+    // Set high pixel density for crisp signatures on iOS/Retina screens
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      
+      ctx.lineWidth = 2.2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#0f172a';
+    }
+
+    // Call on start and window resize
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function getPointerPosition(event) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+      const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      hasSignature = true;
+      const pos = getPointerPosition(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const pos = getPointerPosition(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function stopDrawing() {
+      if (isDrawing) {
+        ctx.closePath();
+        isDrawing = false;
+      }
+    }
+
+    // Mouse events
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+
+    // Touch events for mobile
+    canvas.addEventListener('touchstart', startDrawing, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    window.addEventListener('touchend', stopDrawing);
+
+    // Clear signature button
+    clearBtn.addEventListener('click', () => {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      hasSignature = false;
+    });
+
+    // Handle file input change
+    function handleFileSelected(event) {
+      const input = event.target;
+      if (input.files && input.files.length > 0) {
+        fileChosenText.textContent = input.files[0].name;
+        fileChosenText.classList.remove('text-slate-400');
+        fileChosenText.classList.add('text-emerald-700', 'font-semibold');
+      } else {
+        fileChosenText.textContent = 'Nenhum arquivo escolhido';
+      }
+    }
+
+    // Submit validation
+    submitBtn.addEventListener('click', () => {
+      if (!agreementCheckbox.checked) {
+        alert('Por favor, marque a caixa confirmando que concorda com os termos antes de prosseguir.');
+        agreementCheckbox.focus();
+        return;
+      }
+
+      if (!hasSignature) {
+        alert('Por favor, faça sua assinatura digital no campo demarcado.');
+        return;
+      }
+
+      // Success visual feedback
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        Registrando Assinatura...
+      `;
+
+      setTimeout(() => {
+        alert('Documento assinado com sucesso! O comprovante de autenticidade foi registrado e enviado para o seu e-mail e WhatsApp.');
+        submitBtn.innerHTML = '✔ Documento Assinado e Enviado!';
+        submitBtn.classList.replace('bg-[#10a352]', 'bg-slate-700');
+      }, 1200);
+    });
+  </script>
+<!-- END: Signature Canvas & Interaction Logic -->
+</body></html>
